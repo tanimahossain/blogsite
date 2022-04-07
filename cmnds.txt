@@ -1,0 +1,14 @@
+npm i lodash
+npm install --g yarn
+yarn add react
+npm i nodemon
+npm install -g win-node-env
+npm i express@4
+git add .
+git commit -m "commit name"
+git push -u origin main
+///every time git push
+git add .
+git commit -m "commit name"
+git push
+///everytime git pull
