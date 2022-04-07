@@ -2,11 +2,12 @@
   "dependencies": {
     "express": "^4.17.3",
     "lodash": "^4.17.21",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.15",
     "react": "^18.0.0"
   },
   "scripts": {
-    "start": "NODE_ENV=staging nodemon index",
-    "production": "NODE_ENV=production nodemon index"
+    "start": "NODE_ENV=staging nodemon server",
+    "production": "NODE_ENV=production nodemon server"
   }
 }

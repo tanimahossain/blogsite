@@ -4,6 +4,7 @@ yarn add react
 npm i nodemon
 npm install -g win-node-env
 npm i express@4
+npm i morgan
 git add .
 git commit -m "commit name"
 git push -u origin main
