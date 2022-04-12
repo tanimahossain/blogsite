@@ -1,6 +1,4 @@
-
-
-///***For all Users***///
+///For all Users///
 exports.getAllUsers = (req,res) => {
     console.log(req.body.abc);
     res.status(200).send("get req in all Users");
@@ -14,9 +12,9 @@ exports.postAllUsers = (req,res) => {
 exports.deleteAllUsers = (req,res) => {
     res.status(200).send("delete req in all Users");
 };
-///***For all users***///
+///For all users///
 
-///***For a single user***///
+///For a single user///
 exports.getUser = (req,res) => {
     res.status(200).send("get req in Users");
 };
@@ -32,4 +30,4 @@ exports.updateUser = (req,res) => {
 exports.deleteUser = (req,res) => {
     res.status(200).send("delete req in Users");
 };
-///***For a single user***///
+///For a single user///
