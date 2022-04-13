@@ -1,33 +1,35 @@
+///dependencies///
+const userServices = require('./../services/userServices.js');
+///dependencies///
+
 ///For all Users///
 exports.getAllUsers = (req,res) => {
-    console.log(req.body.abc);
-    res.status(200).send("get req in all Users");
-};
-
-//not for user end
-exports.postAllUsers = (req,res) => {
-    res.status(200).send("post req in all Users");
+    console.log(req.body);
+    userServices.getAllUsers(req,res);
 };
 
 exports.deleteAllUsers = (req,res) => {
-    res.status(200).send("delete req in all Users");
+    userServices.deleteAllUsers(req,res);
 };
 ///For all users///
 
 ///For a single user///
 exports.getUser = (req,res) => {
-    res.status(200).send("get req in Users");
+    console.log(req.body);
+    userServices.getUser(req,res);
 };
-
 exports.postUser = (req,res) => {
-    res.status(200).send("post req in Users");
+    console.log(req.body);
+    userServices.createUser(req,res);
+    
 };
 
 exports.updateUser = (req,res) => {
-    res.status(200).send("update req in Users");
+    console.log(req.body);
+    userServices.updateUser(req,res);
 };
 
 exports.deleteUser = (req,res) => {
-    res.status(200).send("delete req in Users");
+    userServices.deleteUser(req,res);
 };
 ///For a single user///

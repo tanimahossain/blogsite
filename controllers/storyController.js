@@ -1,35 +1,35 @@
+///dependencies///
+const storyServices = require('./../services/storyServices.js');
+///dependencies///
 
-///***For all Stories***///
+///For all Stories///
 exports.getAllStories = (req,res) => {
-    res.status(200).send("get req in all Stories");
-};
-
-//not for user end
-exports.postAllStories = (req,res) => {
-    res.status(200).send("post req in all Stories");
+    console.log(req.body);
+    storyServices.getAllStories(req,res);
 };
 
 exports.deleteAllStories = (req,res) => {
-    res.status(200).send("delete req in all Stories");
+    storyServices.deleteAllStories(req,res);
 };
-///***For all Stories***///
+///For all Stories///
 
-///***For a single Story***///
+///For a single story///
 exports.getStory = (req,res) => {
-    res.status(200).send("get req in Stories");
+    console.log(req.body);
+    storyServices.getStory(req,res);
 };
-
 exports.postStory = (req,res) => {
-    const d = new Date();
-    req.body.time = d.toUTCString;
-    res.status(200).send("post req in Stories");
+    console.log(req.body);
+    storyServices.createStory(req,res);
+    
 };
 
 exports.updateStory = (req,res) => {
-    res.status(200).send("update req in Stories");
+    console.log(req.body);
+    storyServices.updateStory(req,res);
 };
 
 exports.deleteStory = (req,res) => {
-    res.status(200).send("delete req in Stories");
+    storyServices.deleteStory(req,res);
 };
-///***For a single Story***///
+///For a single story///

@@ -4,20 +4,16 @@ const router = express.Router();
 const storyController = require('./../controllers/storyController');
 ///Dependencies///
 
-///For all Stories///
 router
     .route('/')
-    .get(storyController.getAllStories)
-    .post(storyController.postAllStories)
-    .delete(storyController.deleteAllStories);
-///For all Stories///
+    .get(storyController.getAllStories) ///all stories read
+    .post(storyController.postStory) ///post a story
+    .delete(storyController.deleteAllStories); ///all stories delete
 
-///For a single Story///
 router
     .route('/:id')
-    .get(storyController.getStory)
-    .post(storyController.postStory)
-    .put(storyController.updateStory)
-    .delete(storyController.deleteStory);
+    .get(storyController.getStory) ///read a story
+    .put(storyController.updateStory) /// edit a story
+    .delete(storyController.deleteStory); ///delete a story
+
 module.exports = router;
-///For a single Story///

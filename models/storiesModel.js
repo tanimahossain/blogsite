@@ -7,8 +7,8 @@ const Story  = dbConfig.sequelize.define( 'story', {
         allowNull: false,
         primaryKey: true
     },
-    authorId: {
-        type: DataTypes.BIGINT.UNSIGNED,
+    authorUsername: {
+        type: DataTypes.STRING,
         allowNull: false
     },
     authorName: {
@@ -26,11 +26,7 @@ const Story  = dbConfig.sequelize.define( 'story', {
     storyDescription: {
         type: DataTypes.STRING,
         allowNull: false
-    },
-    postTime: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
+    }
 });
 
 module.exports = Story;
