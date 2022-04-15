@@ -15,7 +15,6 @@ exports.deleteAllUsers = (req,res) => {
 
 ///For a single user///
 exports.getUser = (req,res) => {
-    console.log(req.body);
     userServices.getUser(req,res);
 };
 exports.postUser = (req,res) => {

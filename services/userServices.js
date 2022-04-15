@@ -4,10 +4,10 @@ const hashString = require('./../utilities/hashString.js');
 
 /// For a single user///
 exports.getUser = async(req,res) => {
-    console.log(req.body);
     await User.findAll({
+        attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
         where: {
-            userName: req.body.userName
+            userName: req.params.id
         }
     })
     .then( (userData) => {
@@ -83,7 +83,9 @@ exports.deleteAllUsers = async(req,res) => {
 
 exports.getAllUsers = async(req,res) => {
     console.log(req.body);
-    await User.findAll()
+    await User.findAll({
+        attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+    })
     .then( (userData) => {
         const Data ={
             status: 'User data fetched sucessfully',

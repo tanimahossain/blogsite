@@ -3,10 +3,9 @@ const Story = require('./../models/storiesModel.js');
 
 /// For a single user///
 exports.getStory = async(req,res) => {
-    console.log(req.body);
     await Story.findAll({
         where: {
-            storyId: req.body.storyId
+            storyId: req.params.id
         }
     })
     .then( (storyData) => {
@@ -22,6 +21,7 @@ exports.getStory = async(req,res) => {
 }
 
 exports.createStory = async(req,res) => {
+    console.log(req.body);
     let storyInfo = {
         storyId: Math.floor(Math.random() * (1000000001) ),
         authorUsername: req.body.authorUsername,
@@ -57,7 +57,7 @@ exports.updateStory = async(req,res) => {
 exports.deleteStory = async(req,res) => {
     await Story.destroy({
         where: {
-            storyId: req.body.storyId
+            storyId: req.params.id
         }
     })
     .then( () => {
@@ -82,9 +82,11 @@ exports.deleteAllStories = async(req,res) => {
     })
 }
 
-exports.getAllStory = async(req,res) => {
-    console.log(req.body);
-    await Story.findAll()
+exports.getAllStories = async(req,res) => {
+    console.log(req);
+    await Story.findAll({
+        attributes: { exclude: ['storyDescription'] }
+    })
     .then( (storyData) => {
         const Data ={
             status: 'Story data fetched sucessfully',
