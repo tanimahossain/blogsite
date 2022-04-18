@@ -20,6 +20,10 @@ const User  = dbConfig.sequelize.define( 'user', {
     password: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    passChanged: {
+        type: DataTypes.BIGINT.UNSIGNED,
+        allowNull: false
     }
 });
 

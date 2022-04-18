@@ -1,8 +1,8 @@
-
-const jwt = require('jsonwebtoken');
+///dependencies///
 const User = require('./../models/usersModel.js');
 const hashString = require('./../utilities/hashString.js');
-const environments = require('./../helpers/environments');
+const authController = require('./../controllers/authController.js');
+///dependencies///
 
 /// For a single user///
 exports.getUser = async(req,res) => {
@@ -29,11 +29,12 @@ exports.signUp = async(req,res) => {
         userName: req.body.userName,
         fullName: req.body.fullName,
         eMail: req.body.eMail,
-        password: hashString.makeHash(req.body.password)
+        password: hashString.makeHash(req.body.password),
+        passChanged: Math.floor(Date.now()/1000)
     }
     await User.create(userInfo)
     .then( () => {
-        const token = jwt.sign({userName: userInfo.userName}, environments.jwtSecretKey,{expiresIn: environments.jwtExpire});
+        const token = authController.getToken({userName: userInfo.userName});
         res.status(200).json({
             status: 'Sign Up completed successfully!',
             token,
@@ -49,25 +50,42 @@ exports.signUp = async(req,res) => {
     })
 }
 
+exports.logIn = async(req,res) => {
+    ///
+}
+
 exports.updateUser = async(req,res) => {
     console.log(req.body);
-    await User.update(req.body,{
+    const userInfo = req.body;
+    let msg = {
+        status: 'User updated Succesfully.'
+    };
+    if(req.body.password){
+        userInfo.passChanged = Math.floor(Date.now()/1000);
+        userInfo.password = hashString.makeHash(req.body.password);
+        const token = authController.getToken({userName: userInfo.userName});
+        msg = {
+            status: 'User updated Succesfully.',
+            token
+        }
+    }
+    await User.update(userInfo,{
         where: {
-            userName: req.body.userName
+            userName: req.params.id
         }
     })
     .then( () => {
-        res.status(200).send('User updated Succesfully.');
+        res.status(200).send(msg);
     })
     .catch( (err) => {
-        res.status(200).send('Could not update user '+ err);
+        res.status(500).send('Could not update user '+ err);
     })
 }
 
 exports.deleteUser = async(req,res) => {
     await User.destroy({
         where: {
-            userName: req.body.userName
+            userName: req.params.id
         }
     })
     .then( () => {
