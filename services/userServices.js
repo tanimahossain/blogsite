@@ -1,6 +1,8 @@
 
+const jwt = require('jsonwebtoken');
 const User = require('./../models/usersModel.js');
 const hashString = require('./../utilities/hashString.js');
+const environments = require('./../helpers/environments');
 
 /// For a single user///
 exports.getUser = async(req,res) => {
@@ -31,7 +33,16 @@ exports.signUp = async(req,res) => {
     }
     await User.create(userInfo)
     .then( () => {
-        res.status(200).send('User Created Succesfully.');
+        const token = jwt.sign({userName: userInfo.userName}, environments.jwtSecretKey,{expiresIn: environments.jwtExpire});
+        res.status(200).json({
+            status: 'Sign Up completed successfully!',
+            token,
+            data: {
+                userName: userInfo.userName,
+                fullName: userInfo.fullName,
+                eMail: userInfo.eMail
+            }
+        });
     })
     .catch( (err) => {
         res.status(200).send('Could not create user '+ err);

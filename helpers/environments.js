@@ -6,13 +6,17 @@ const environments = {};
 environments.staging = {
     port: 3000,
     envName: 'staging',
-    secretKey: 'tanima'
+    secretKey: 'tanima',
+    jwtSecretKey: 'blogsite-by-tanima-hossain-staging',
+    jwtExpire: '90d'
 }
 
 environments.production = {
     port: 5000,
     envName: 'production',
-    secretKey: 'secretKey'
+    secretKey: 'secretKey',
+    jwtSecretKey: 'blogsite-by-tanima-hossain-production',
+    jwtExpire: '30d'
 }
 
 const currentEnvironment = typeof(process.env.NODE_ENV) === 'string' ? process.env.NODE_ENV : 'staging';
