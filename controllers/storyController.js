@@ -20,7 +20,7 @@ exports.getStory = (req,res) => {
 };
 exports.postStory = (req,res) => {
     console.log(req.body);
-    storyServices.createStory(req,res);
+    storyServices.postStory(req,res);
     
 };
 

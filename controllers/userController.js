@@ -17,9 +17,9 @@ exports.deleteAllUsers = (req,res) => {
 exports.getUser = (req,res) => {
     userServices.getUser(req,res);
 };
-exports.postUser = (req,res) => {
+exports.signUp = (req,res) => {
     console.log(req.body);
-    userServices.createUser(req,res);
+    userServices.signUp(req,res);
     
 };
 

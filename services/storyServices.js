@@ -20,10 +20,20 @@ exports.getStory = async(req,res) => {
     })
 }
 
-exports.createStory = async(req,res) => {
-    console.log(req.body);
+exports.postStory = async(req,res) => {
+    let mx = 0;
+    await Story.max('storyNo',{
+        where: {authorUsername: req.body.authorUsername}
+    })
+    .then((stryNo) =>{
+        mx = stryNo + 1;
+    })
+    .catch( (err) => {
+        res.status(200).send("there was a problem. "+err);
+    })
     let storyInfo = {
-        storyId: Math.floor(Math.random() * (1000000001) ),
+        storyId: req.body.authorUsername + mx,
+        storyNo: mx,
         authorUsername: req.body.authorUsername,
         authorName: req.body.authorName,
         storyTitle: req.body.storyTitle,

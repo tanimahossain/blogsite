@@ -13,7 +13,7 @@ hashString.makeHash = function(str){
     return hash;
 }
 hashString.checkHash = function(hashedStr, str){
-    hash=this.makeHash(str);
+    const hash=this.makeHash(str);
     if( hash===hashedStr )
         return true;
     else

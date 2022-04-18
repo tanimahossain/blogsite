@@ -3,9 +3,14 @@ const dbConfig = require('./../database/dbConfig.js');
 
 const Story  = dbConfig.sequelize.define( 'story', {
     storyId: {
-        type: DataTypes.BIGINT.UNSIGNED,
+        type: DataTypes.STRING,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        unique: true
+    },
+    storyNo: {
+        type: DataTypes.BIGINT.UNSIGNED,
+        allowNull: false
     },
     authorUsername: {
         type: DataTypes.STRING,

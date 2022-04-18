@@ -22,7 +22,7 @@ exports.getUser = async(req,res) => {
     })
 }
 
-exports.createUser = async(req,res) => {
+exports.signUp = async(req,res) => {
     let userInfo = {
         userName: req.body.userName,
         fullName: req.body.fullName,
