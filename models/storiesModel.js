@@ -1,37 +1,37 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const dbConfig = require('./../database/dbConfig.js');
+const { DataTypes } = require('sequelize');
+const dbConfig = require('../database/dbConfig');
 
-const Story  = dbConfig.sequelize.define( 'story', {
+const Story = dbConfig.sequelize.define('story', {
     storyId: {
         type: DataTypes.STRING,
         allowNull: false,
         primaryKey: true,
-        unique: true
+        unique: true,
     },
     storyNo: {
         type: DataTypes.BIGINT.UNSIGNED,
-        allowNull: false
+        allowNull: false,
     },
     authorUsername: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
     authorName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
     storyTitle: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
     openingLines: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
     storyDescription: {
         type: DataTypes.STRING,
-        allowNull: false
-    }
+        allowNull: false,
+    },
 });
 
 module.exports = Story;

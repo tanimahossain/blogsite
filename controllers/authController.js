@@ -1,52 +1,88 @@
-///decependencies///
-const util = require('util');
+/// decependencies ///
+const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
-const jwtTokenErrorController = require('./jwtTokenErrorController.js');
-const environments = require('./../helpers/environments');
-const User = require('./../models/usersModel.js');
-///dependencies///
+const environments = require('../helpers/environments');
+const User = require('../models/usersModel');
+const hashString = require('../utilities/hashString');
+/// dependencies ///
 
 exports.getToken = (userInfo) => {
-    const token = jwt.sign(userInfo, environments.jwtSecretKey,{expiresIn: environments.jwtExpire});
+    const token = jwt.sign(userInfo, environments.jwtSecretKey, {
+        expiresIn: environments.jwtExpire,
+    });
     return token;
-}
-exports.getPayload = async(req, res, next) => {
-    token = req.headers.authorization.split(' ')[1];
-}
-exports.authorize = async(req, res, next) => {
+};
+
+exports.authorize = async (req, res, next) => {
     let token;
-    ///Existence of Token
-        console.log('token coming');
-    if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-        token = req.headers.authorization.split(' ')[1];
-    } else{
+
+    /// Existence of Token
+    console.log('token coming');
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+        const { 1: arr } = req.headers.authorization.split(' ');
+        token = arr;
+    } else {
         return res.status(401).send('Please log in first!');
     }
-    ///Verification of Token
+
+    /// Verification of Token
     let payload;
     console.log('payload coming');
-    try{
-        payload = await jwt.verify(token, environments.jwtSecretKey);
-    } catch(err){
+    try {
+        payload = await promisify(jwt.verify)(token, environments.jwtSecretKey);
+    } catch (err) {
         return res.status(401).send('Authorization error! Please log in first!');
     }
-    if(!payload.userName){
+    if (!payload.userName) {
         return res.status(401).send('Authorize! Please log in first!');
     }
-    ///User Exists
+
+    /// User Exists
     const userStillExists = await User.findOne({
         attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
         where: {
-            userName: payload.userName
-        }
+            userName: payload.userName,
+        },
     });
-    if(!userStillExists){
+    if (!userStillExists) {
         return res.status(401).send('Authorize!! Please log in first!');
     }
-    console.log(payload);
-    ///If password changed after issuing this token
-    if(userStillExists.passChanged>payload.iat){
+
+    /// If password changed after issuing this token
+    if (userStillExists.passChanged > payload.iat) {
         return res.status(401).send('looks like your password has changed! Please log in again!');
     }
-    next();
-}
+    return next();
+};
+
+exports.logIn = async (req, res) => {
+    console.log(req.body);
+    const userInfo = req.body;
+
+    /// Provided username and password
+    if (!userInfo.userName || !userInfo.password) {
+        return res.status(401).send('Please provide username and password properly');
+    }
+
+    /// Username exists
+    const userCheck = await User.findOne({
+        attributes: ['userName', 'password'],
+        where: {
+            userName: userInfo.userName,
+        },
+    });
+    if (!userCheck) {
+        return res.status(404).send('No such user exists');
+    }
+
+    /// Password is Correct
+    if (!hashString.checkHash(userCheck.password, userInfo.password)) {
+        return res.status(401).send('Wrong password');
+    }
+    const token = this.getToken({ userName: userInfo.userName });
+    return res.status(200).send({
+        status: 'logges In successfully',
+        userName: userInfo.userName,
+        token,
+    });
+};

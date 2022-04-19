@@ -1,34 +1,31 @@
-///dependencies///
-const userServices = require('./../services/userServices.js');
-///dependencies///
+/// Dependencies///
+const userServices = require('../services/userServices');
+/// Dependencies///
 
-///For all Users///
-exports.getAllUsers = (req,res) => {
+/// For all Users///
+exports.getAllUsers = (req, res) => {
     console.log(req.body);
-    userServices.getAllUsers(req,res);
+    userServices.getAllUsers(req, res);
 };
 
-exports.deleteAllUsers = (req,res) => {
-    userServices.deleteAllUsers(req,res);
+exports.deleteAllUsers = (req, res) => {
+    userServices.deleteAllUsers(req, res);
 };
-///For all users///
 
-///For a single user///
-exports.getUser = (req,res) => {
-    userServices.getUser(req,res);
+/// For a single user///
+exports.getUser = (req, res) => {
+    userServices.getUser(req, res);
 };
-exports.signUp = (req,res) => {
+exports.signUp = (req, res) => {
     console.log(req.body);
-    userServices.signUp(req,res);
-    
+    userServices.signUp(req, res);
 };
 
-exports.updateUser = (req,res) => {
+exports.updateUser = (req, res) => {
     console.log(req.body);
-    userServices.updateUser(req,res);
+    userServices.updateUser(req, res);
 };
 
-exports.deleteUser = (req,res) => {
-    userServices.deleteUser(req,res);
+exports.deleteUser = (req, res) => {
+    userServices.deleteUser(req, res);
 };
-///For a single user///
