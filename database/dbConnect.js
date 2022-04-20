@@ -18,7 +18,10 @@ db.connect = async () => {
 
 db.Users = require('../models/usersModel');
 db.Stories = require('../models/storiesModel');
-
+db.Users.hasMany(db.Stories,{
+    foreignKey: 'authorUsername',
+    onDelete: 'CASCADE'
+});
 db.dataSync = async () => {
     try {
         await db.sequelize.sync({ force: true });

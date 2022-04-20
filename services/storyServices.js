@@ -1,4 +1,5 @@
 const Story = require('../models/storiesModel');
+const authController = require('../controllers/authController');
 
 /// For a single user///
 exports.getStory = async (req, res) => {
@@ -21,8 +22,15 @@ exports.getStory = async (req, res) => {
 
 exports.postStory = async (req, res) => {
     let mx = 0;
+    let payload;
+    console.log(req.headers);
+    try {
+        payload = await authController.parseToken(req, res);
+    } catch (err) {
+        res.status(400).send(`gkdjsyg ${err}`);
+    }
     await Story.max('storyNo', {
-        where: { authorUsername: req.body.authorUsername },
+        where: { authorUsername: payload.userName },
     })
         .then((stryNo) => {
             mx = stryNo + 1;
@@ -31,9 +39,9 @@ exports.postStory = async (req, res) => {
             res.status(200).send(`there was a problem. ${err}`);
         });
     const storyInfo = {
-        storyId: `${req.body.authorUsername}_${mx}`,
+        storyId: `${payload.userName}_${mx}`,
         storyNo: mx,
-        authorUsername: req.body.authorUsername,
+        authorUsername: payload.userName,
         authorName: req.body.authorName,
         storyTitle: req.body.storyTitle,
         openingLines: `${req.body.storyDescription.slice(0, 100)}...`,
