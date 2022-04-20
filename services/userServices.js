@@ -25,11 +25,13 @@ exports.getUser = async (req, res) => {
 };
 
 exports.signUp = async (req, res) => {
+    const hash = hashString.makeHash(req.body.password);
+    console.log(hash, typeof hash);
     const userInfo = {
         userName: req.body.userName,
         fullName: req.body.fullName,
         eMail: req.body.eMail,
-        password: hashString.makeHash(req.body.password),
+        password: (await hash).toString(),
         passChanged: Math.floor(Date.now() / 1000),
     };
     await User.create(userInfo)
@@ -58,16 +60,23 @@ exports.updateUser = async (req, res) => {
     };
     if (req.body.password) {
         userInfo.passChanged = Math.floor(Date.now() / 1000);
-        userInfo.password = hashString.makeHash(req.body.password);
+        const hash = hashString.makeHash(req.body.password);
+        userInfo.password = (await hash).toString();
         const token = authController.getToken({ userName: userInfo.userName });
         msg = {
             status: 'User updated Succesfully.',
             token,
         };
     }
+    let payload;
+    try {
+        payload = await authController.parseToken(req, res);
+    } catch (err) {
+        res.status(400).send(`gkdjsyg ${err}`);
+    }
     await User.update(userInfo, {
         where: {
-            userName: req.params.id,
+            userName: payload.userName,
         },
     })
         .then(() => {
@@ -79,9 +88,15 @@ exports.updateUser = async (req, res) => {
 };
 
 exports.deleteUser = async (req, res) => {
+    let payload;
+    try {
+        payload = await authController.parseToken(req, res);
+    } catch (err) {
+        res.status(400).send(`gkdjsyg ${err}`);
+    }
     await User.destroy({
         where: {
-            userName: req.params.id,
+            userName: payload.userName,
         },
     })
         .then(() => {

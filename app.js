@@ -1,28 +1,23 @@
-//dependencies
+/// Dependencies
 const express = require('express');
-const { Sequelize } = require('sequelize');
+
 const app = express();
+const morgan = require('morgan');
 const userRoutes = require('./routes/userRoutes');
 const storyRoutes = require('./routes/storyRoutes');
-const db = require('./database/dbConnect.js');
+const db = require('./database/dbConnect');
 
-///*** unnecessary for production only use in dev testing***///
-const morgan = require('morgan');
+/// *** unnecessary for production only use in dev testing *** ///
 app.use(morgan('dev'));
-///*** unnecessary for production only use in dev testing***///
+/// *** unnecessary for production only use in dev testing *** ///
 
 app.use(express.json());
 
+app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/stories', storyRoutes);
 
-app.use('/api/v1/users',userRoutes);
-app.use('/api/v1/stories',storyRoutes);
-
-///database Connection///
+/// database Connection///
 db.connect();
 db.dataSync();
-///database Connection///
 
-
-/// exporting everything///
 module.exports = app;
-/// exporting everything///

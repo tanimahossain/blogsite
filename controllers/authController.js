@@ -13,9 +13,8 @@ exports.getToken = (userInfo) => {
     return token;
 };
 
-exports.authorize = async (req, res, next) => {
+exports.parseToken = async (req, res) => {
     let token;
-
     /// Existence of Token
     console.log('token coming');
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
@@ -24,19 +23,23 @@ exports.authorize = async (req, res, next) => {
     } else {
         return res.status(401).send('Please log in first!');
     }
-
     /// Verification of Token
-    let payload;
     console.log('payload coming');
+    const val = await promisify(jwt.verify)(token, environments.jwtSecretKey);
+    return val;
+};
+
+exports.authorize = async (req, res, next) => {
+    let payload;
     try {
-        payload = await promisify(jwt.verify)(token, environments.jwtSecretKey);
+        payload = await this.parseToken(req, res);
     } catch (err) {
-        return res.status(401).send('Authorization error! Please log in first!');
+        res.status(400).send(`gkdjsyg ${err}`);
     }
     if (!payload.userName) {
         return res.status(401).send('Authorize! Please log in first!');
     }
-
+    console.log(typeof payload, payload);
     /// User Exists
     const userStillExists = await User.findOne({
         attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },

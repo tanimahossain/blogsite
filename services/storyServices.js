@@ -31,7 +31,7 @@ exports.postStory = async (req, res) => {
             res.status(200).send(`there was a problem. ${err}`);
         });
     const storyInfo = {
-        storyId: req.body.authorUsername + mx,
+        storyId: `${req.body.authorUsername}_${mx}`,
         storyNo: mx,
         authorUsername: req.body.authorUsername,
         authorName: req.body.authorName,
