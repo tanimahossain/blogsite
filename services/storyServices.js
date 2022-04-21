@@ -58,6 +58,7 @@ exports.postStory = async (req, res) => {
 
 exports.updateStory = async (req, res) => {
     const storyInfo = req.body;
+    console.log('updatestory', req.params.id);
     if (req.body.storyDescription) {
         storyInfo.openingLines = `${req.body.storyDescription.slice(0, 100)}...`;
     }
@@ -67,6 +68,7 @@ exports.updateStory = async (req, res) => {
         },
     })
         .then(() => {
+            console.log('updatedstory', req.params.id);
             res.status(200).send('Story updated Succesfully.');
         })
         .catch((err) => {

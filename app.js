@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const userRoutes = require('./routes/userRoutes');
 const storyRoutes = require('./routes/storyRoutes');
 const db = require('./database/dbConnect');
+const appError = require('./middlewares/appError');
 
 /// *** unnecessary for production only use in dev testing *** ///
 app.use(morgan('dev'));
@@ -13,8 +14,10 @@ app.use(morgan('dev'));
 
 app.use(express.json());
 
+/// Routes ///
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/stories', storyRoutes);
+app.all('*', appError.wrongRoute);
 
 /// database Connection///
 db.connect();

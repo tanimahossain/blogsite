@@ -1,17 +1,19 @@
+/// Dependencies ///
 const express = require('express');
 
 const router = express.Router();
 const userController = require('../controllers/userController');
-const authController = require('../controllers/authController');
+const auth = require('../controllers/authController');
 
+/// Routes ///
 router
     .route('/')
     .get(userController.getAllUsers)
     .post(userController.signUp)
-    .put(authController.authorize, userController.updateUser)
-    .delete(authController.authorize, userController.deleteUser);
+    .put(auth.authorize, userController.updateUser)
+    .delete(auth.authorize, userController.deleteUser);
 
-router.route('/:id').get(userController.getUser); /// view a profile
-router.route('/logIn').post(authController.logIn);
+router.route('/:id').get(userController.getUser);
+router.route('/logIn').post(auth.logIn);
 
 module.exports = router;

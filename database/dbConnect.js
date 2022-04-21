@@ -18,9 +18,10 @@ db.connect = async () => {
 
 db.Users = require('../models/usersModel');
 db.Stories = require('../models/storiesModel');
-db.Users.hasMany(db.Stories,{
+
+db.Users.hasMany(db.Stories, {
     foreignKey: 'authorUsername',
-    onDelete: 'CASCADE'
+    onDelete: 'CASCADE',
 });
 db.dataSync = async () => {
     try {

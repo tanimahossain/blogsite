@@ -25,8 +25,12 @@ exports.parseToken = async (req, res) => {
     }
     /// Verification of Token
     console.log('payload coming');
-    const val = await promisify(jwt.verify)(token, environments.jwtSecretKey);
-    return val;
+    try {
+        const payload = await promisify(jwt.verify)(token, environments.jwtSecretKey);
+        return payload;
+    } catch {
+        return res.status(300).send('parsing failed');
+    }
 };
 
 exports.authorize = async (req, res, next) => {
@@ -34,7 +38,7 @@ exports.authorize = async (req, res, next) => {
     try {
         payload = await this.parseToken(req, res);
     } catch (err) {
-        res.status(400).send(`gkdjsyg ${err}`);
+        return res.status(400).send(`gkdjsyg ${err}`);
     }
     if (!payload.userName) {
         return res.status(401).send('Authorize! Please log in first!');
