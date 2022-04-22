@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 const environments = require('../helpers/environments');
 const User = require('../models/usersModel');
 const hashString = require('../utilities/hashString');
+const catchAsync = require('../utilities/catchAsync');
+const AppError = require('../middlewares/appError');
 /// dependencies ///
 
 exports.getToken = (userInfo) => {
@@ -13,35 +15,34 @@ exports.getToken = (userInfo) => {
     return token;
 };
 
-exports.parseToken = async (req, res) => {
+exports.parseToken = async (req, res, next) => {
     let token;
     /// Existence of Token
-    console.log('token coming');
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         const { 1: arr } = req.headers.authorization.split(' ');
         token = arr;
     } else {
-        return res.status(401).send('Please log in first!');
+        next(new AppError('Please log in First', 401));
     }
     /// Verification of Token
-    console.log('payload coming');
-    try {
-        const payload = await promisify(jwt.verify)(token, environments.jwtSecretKey);
-        return payload;
-    } catch {
-        return res.status(300).send('parsing failed');
-    }
+    let payload;
+    await promisify(jwt.verify)(token, environments.jwtSecretKey).then((val) => {
+        payload = val;
+        console.log(val);
+    });
+    console.log(payload);
+    return payload;
 };
 
-exports.authorize = async (req, res, next) => {
+exports.authorize = catchAsync(async (req, res, next) => {
     let payload;
-    try {
-        payload = await this.parseToken(req, res);
-    } catch (err) {
-        return res.status(400).send(`gkdjsyg ${err}`);
-    }
+    await this.parseToken(req, res, next).then((val) => {
+        console.log(val);
+        payload = val;
+    });
+    console.log(typeof payload, payload);
     if (!payload.userName) {
-        return res.status(401).send('Authorize! Please log in first!');
+        next(new AppError('Please log in First', 401));
     }
     console.log(typeof payload, payload);
     /// User Exists
@@ -52,23 +53,23 @@ exports.authorize = async (req, res, next) => {
         },
     });
     if (!userStillExists) {
-        return res.status(401).send('Authorize!! Please log in first!');
+        next(new AppError('User not found!', 404));
     }
 
     /// If password changed after issuing this token
     if (userStillExists.passChanged > payload.iat) {
-        return res.status(401).send('looks like your password has changed! Please log in again!');
+        next(new AppError('Please log in again', 401));
     }
-    return next();
-};
+    next();
+});
 
-exports.logIn = async (req, res) => {
+exports.logIn = catchAsync(async (req, res, next) => {
     console.log(req.body);
     const userInfo = req.body;
 
     /// Provided username and password
     if (!userInfo.userName || !userInfo.password) {
-        return res.status(401).send('Please provide username and password properly');
+        next(new AppError('Please provide username password correctly', 400));
     }
 
     /// Username exists
@@ -79,17 +80,20 @@ exports.logIn = async (req, res) => {
         },
     });
     if (!userCheck) {
-        return res.status(404).send('No such user exists');
+        next(new AppError('No such user', 404));
     }
 
     /// Password is Correct
-    if (!hashString.checkHash(userCheck.password, userInfo.password)) {
-        return res.status(401).send('Wrong password');
+    const flag = await hashString.checkHash(userCheck.password, userInfo.password);
+    console.log(`inflag: ${!flag}`);
+    if (!flag) {
+        console.log('got in');
+        next(new AppError('Wrong password', 401));
     }
     const token = this.getToken({ userName: userInfo.userName });
-    return res.status(200).send({
+    res.status(200).send({
         status: 'logges In successfully',
         userName: userInfo.userName,
         token,
     });
-};
+});

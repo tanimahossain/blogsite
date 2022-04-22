@@ -10,7 +10,14 @@ hashString.makeHash = async (str) => {
     return hash;
 };
 hashString.checkHash = async (hashedStr, str) => {
-    const flag = await bcrypt.compare(str, hashedStr);
-    return flag;
+    let flag;
+    await bcrypt
+        .compare(str, hashedStr)
+        .then((val) => {
+            flag = val;
+            console.log(`flag: ${flag}`);
+            return flag;
+        })
+        .catch((err) => false);
 };
 module.exports = hashString;

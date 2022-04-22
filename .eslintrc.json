@@ -11,6 +11,10 @@
     "no-console": 0,
     "indent": 0,
     "linebreak-style": 0,
+    "no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "req|res|next|val|err" }
+    ],
     "prettier/prettier": [
       "error",
       {

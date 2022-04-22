@@ -3,30 +3,28 @@ const storyServices = require('../services/storyServices');
 /// Dependencies ///
 
 /// For all Stories///
-exports.getAllStories = (req, res) => {
-    console.log(req.body);
-    storyServices.getAllStories(req, res);
+exports.getAllStories = (req, res, next) => {
+    storyServices.getAllStories(req, res, next);
 };
 
-exports.deleteAllStories = (req, res) => {
-    storyServices.deleteAllStories(req, res);
+exports.deleteAllStories = (req, res, next) => {
+    storyServices.deleteAllStories(req, res, next);
 };
 
 /// For a single story///
-exports.getStory = (req, res) => {
+exports.getStory = (req, res, next) => {
     console.log(req.body);
-    storyServices.getStory(req, res);
-};
-exports.postStory = (req, res) => {
-    console.log(req.body);
-    storyServices.postStory(req, res);
+    storyServices.getStory(req, res, next);
 };
 
-exports.updateStory = (req, res) => {
-    console.log(req.body);
-    storyServices.updateStory(req, res);
+exports.postStory = (req, res, next) => {
+    storyServices.postStory(req, res, next);
 };
 
-exports.deleteStory = (req, res) => {
-    storyServices.deleteStory(req, res);
+exports.updateStory = (req, res, next) => {
+    storyServices.updateStory(req, res, next);
+};
+
+exports.deleteStory = (req, res, next) => {
+    storyServices.deleteStory(req, res, next);
 };

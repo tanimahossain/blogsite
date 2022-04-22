@@ -2,29 +2,27 @@
 const User = require('../models/usersModel');
 const hashString = require('../utilities/hashString');
 const authController = require('../controllers/authController');
+const negotiate = require('../utilities/contentNegotiation');
+const catchAsync = require('../utilities/catchAsync');
 /// Dependencies///
 
 /// For a single user///
-exports.getUser = async (req, res) => {
+exports.getUser = catchAsync(async (req, res, next) => {
     await User.findAll({
-        attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
+        attributes: { exclude: ['password', 'createdAt', 'updatedAt', 'passChanged'] },
         where: {
             userName: req.params.id,
         },
-    })
-        .then((userData) => {
-            const Data = {
-                status: 'User data fetched sucessfully',
-                userData,
-            };
-            res.status(200).send(Data);
-        })
-        .catch((err) => {
-            res.status(200).send(`User did was not found ${err}`);
-        });
-};
+    }).then((userData) => {
+        const Data = {
+            status: 'User data fetched sucessfully',
+            userData,
+        };
+        negotiate.negotiateData(Data, req, res, next);
+    });
+});
 
-exports.signUp = async (req, res) => {
+exports.signUp = catchAsync(async (req, res, next) => {
     const hash = hashString.makeHash(req.body.password);
     console.log(hash, typeof hash);
     const userInfo = {
@@ -34,25 +32,23 @@ exports.signUp = async (req, res) => {
         password: (await hash).toString(),
         passChanged: Math.floor(Date.now() / 1000),
     };
-    await User.create(userInfo)
-        .then(() => {
-            const token = authController.getToken({ userName: userInfo.userName });
-            res.status(200).json({
-                status: 'Sign Up completed successfully!',
-                token,
-                data: {
-                    userName: userInfo.userName,
-                    fullName: userInfo.fullName,
-                    eMail: userInfo.eMail,
-                },
-            });
-        })
-        .catch((err) => {
-            res.status(200).send(`Could not create user ${err}`);
-        });
-};
+    await User.create(userInfo).then(() => {
+        const token = authController.getToken({ userName: userInfo.userName });
+        const Data = {
+            status: 'Sign Up completed successfully!',
+            token,
+            data: {
+                userName: userInfo.userName,
+                fullName: userInfo.fullName,
+                eMail: userInfo.eMail,
+            },
+        };
 
-exports.updateUser = async (req, res) => {
+        negotiate.negotiateData(Data, req, res, next);
+    });
+});
+
+exports.updateUser = catchAsync(async (req, res, next) => {
     console.log(req.body);
     const userInfo = req.body;
     let msg = {
@@ -68,71 +64,53 @@ exports.updateUser = async (req, res) => {
             token,
         };
     }
-    let payload;
-    try {
-        payload = await authController.parseToken(req, res);
-    } catch (err) {
-        res.status(400).send(`gkdjsyg ${err}`);
-    }
+    const payload = await authController.parseToken(req, res, next);
     await User.update(userInfo, {
         where: {
             userName: payload.userName,
         },
-    })
-        .then(() => {
-            res.status(200).send(msg);
-        })
-        .catch((err) => {
-            res.status(500).send(`Could not update user ${err}`);
-        });
-};
+    }).then(() => {
+        negotiate.negotiateData(msg, req, res, next);
+    });
+});
 
-exports.deleteUser = async (req, res) => {
-    let payload;
-    try {
-        payload = await authController.parseToken(req, res);
-    } catch (err) {
-        res.status(400).send(`gkdjsyg ${err}`);
-    }
+exports.deleteUser = catchAsync(async (req, res, next) => {
+    const payload = await authController.parseToken(req, res, next);
     await User.destroy({
         where: {
             userName: payload.userName,
         },
-    })
-        .then(() => {
-            res.status(200).send('User deleted Succesfully.');
-        })
-        .catch((err) => {
-            res.status(200).send(`Could not delete user ${err}`);
-        });
-};
+    }).then(() => {
+        const Data = {
+            status: 'success',
+            message: 'User deleted Successfully',
+        };
+        negotiate.negotiateData(Data, req, res, next);
+    });
+});
 
 /// For all the users///
-exports.deleteAllUsers = async (req, res) => {
+exports.deleteAllUsers = catchAsync(async (req, res, next) => {
     await User.destroy({
         truncate: true,
-    })
-        .then(() => {
-            res.status(200).send('All Users deleted Succesfully.');
-        })
-        .catch((err) => {
-            res.status(200).send(`Could not delete user ${err}`);
-        });
-};
+    }).then(() => {
+        const Data = {
+            status: 'success',
+            message: 'All user deleted Successfully',
+        };
+        negotiate.negotiateData(Data, req, res, next);
+    });
+});
 
-exports.getAllUsers = async (req, res) => {
+exports.getAllUsers = catchAsync(async (req, res, next) => {
     console.log(req.body);
     await User.findAll({
-        attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
-    })
-        .then((userData) => {
-            const Data = {
-                status: 'User data fetched sucessfully',
-                userData,
-            };
-            res.status(200).send(Data);
-        })
-        .catch((err) => {
-            res.status(200).send(`Could not create user ${err}`);
-        });
-};
+        attributes: { exclude: ['password', 'createdAt', 'updatedAt', 'passChanged'] },
+    }).then((userData) => {
+        const Data = {
+            status: 'User data fetched sucessfully',
+            userData,
+        };
+        negotiate.negotiateData(Data, req, res, next);
+    });
+});
