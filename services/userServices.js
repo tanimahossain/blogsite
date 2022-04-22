@@ -28,7 +28,7 @@ exports.signUp = async (req, res) => {
     const hash = hashString.makeHash(req.body.password);
     console.log(hash, typeof hash);
     const userInfo = {
-        userName: req.body.userName,
+        userName: req.body.userName.toLowerCase(),
         fullName: req.body.fullName,
         eMail: req.body.eMail,
         password: (await hash).toString(),

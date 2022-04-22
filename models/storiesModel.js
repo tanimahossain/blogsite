@@ -11,7 +11,8 @@ const Story = dbConfig.sequelize.define('story', {
     storyNo: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false,
-        autoIncrementIdentity: true,
+        unique: true,
+        autoIncrement: true,
     },
     authorName: {
         type: DataTypes.STRING,

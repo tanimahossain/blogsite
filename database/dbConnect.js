@@ -23,6 +23,9 @@ db.Users.hasMany(db.Stories, {
     foreignKey: 'authorUsername',
     onDelete: 'CASCADE',
 });
+db.Stories.belongsTo(db.Users, {
+    foreignKey: 'authorUsername',
+});
 db.dataSync = async () => {
     try {
         await db.sequelize.sync({ force: true });
