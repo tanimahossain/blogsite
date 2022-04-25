@@ -1,6 +1,5 @@
 /// Dependencies///
 const User = require('../models/usersModel');
-const hashString = require('../utilities/hashString');
 const authController = require('../controllers/authController');
 const negotiate = require('../utilities/contentNegotiation');
 const catchAsync = require('../utilities/catchAsync');
@@ -23,13 +22,12 @@ exports.getUser = catchAsync(async (req, res, next) => {
 });
 
 exports.signUp = catchAsync(async (req, res, next) => {
-    const hash = hashString.makeHash(req.body.password);
-    console.log(hash, typeof hash);
+    const hash = req.body.password;
     const userInfo = {
         userName: req.body.userName.toLowerCase(),
         fullName: req.body.fullName,
         eMail: req.body.eMail,
-        password: (await hash).toString(),
+        password: hash,
         passChanged: Math.floor(Date.now() / 1000),
     };
     await User.create(userInfo).then(() => {
@@ -43,6 +41,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
                 eMail: userInfo.eMail,
             },
         };
+        req.status = 201;
         negotiate.negotiateData(Data, req, res, next);
     });
 });
@@ -53,17 +52,17 @@ exports.updateUser = catchAsync(async (req, res, next) => {
     let msg = {
         status: 'User updated Succesfully.',
     };
+    const payload = await authController.parseToken(req, res, next);
     if (req.body.password) {
         userInfo.passChanged = Math.floor(Date.now() / 1000);
-        const hash = hashString.makeHash(req.body.password);
+        const hash = req.body.password;
         userInfo.password = (await hash).toString();
-        const token = authController.getToken({ userName: userInfo.userName });
+        const token = authController.getToken({ userName: payload.userName });
         msg = {
             status: 'User updated Succesfully.',
             token,
         };
     }
-    const payload = await authController.parseToken(req, res, next);
     await User.update(userInfo, {
         where: {
             userName: payload.userName,

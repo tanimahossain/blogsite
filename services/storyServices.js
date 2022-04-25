@@ -48,6 +48,7 @@ exports.postStory = catchAsync(async (req, res, next) => {
             storyTitle: storyInfo.storyTitle,
             openingLines: storyInfo.openingLines,
         };
+        req.status = 201;
         negotiate.negotiateData(Data, req, res, next);
     });
 });

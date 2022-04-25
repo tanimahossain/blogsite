@@ -10,7 +10,7 @@ const userMiddlewares = require('../middlewares/userMiddlewares');
 router
     .route('/')
     .get(userController.getAllUsers)
-    .post(userController.signUp)
+    .post(userMiddlewares.creatable, userController.signUp)
     .put(auth.authorize, userMiddlewares.updatable, userController.updateUser)
     .delete(auth.authorize, userController.deleteUser);
 

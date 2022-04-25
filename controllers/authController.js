@@ -36,11 +36,11 @@ exports.parseToken = async (req, res, next) => {
 
 exports.authorize = catchAsync(async (req, res, next) => {
     let payload;
-    console.log('came here 1');
     await this.parseToken(req, res, next).then((val) => {
         console.log(val);
         payload = val;
     });
+    console.log('came here 1', payload);
     if (!payload.userName) {
         return next(new AppError('Please log in First', 401));
     }

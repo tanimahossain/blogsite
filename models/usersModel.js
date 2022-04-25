@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('sequelize');
 const dbConfig = require('../database/dbConfig');
+const hashString = require('../utilities/hashString');
 
 const User = dbConfig.sequelize.define(
     'user',
@@ -70,6 +71,10 @@ const User = dbConfig.sequelize.define(
                     arg: true,
                     msg: 'Password can not be empty',
                 },
+                len: {
+                    args: [8, 32],
+                    msg: 'The password length should be between 8 and 32 characters.',
+                },
             },
         },
         passChanged: {
@@ -85,5 +90,10 @@ const User = dbConfig.sequelize.define(
         // eslint-disable-next-line prettier/prettier
     },
 );
+
+User.addHook('afterValidate', async (req) => {
+    const hash = await hashString.makeHash(req.password);
+    req.password = hash;
+});
 
 module.exports = User;

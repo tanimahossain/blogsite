@@ -10,8 +10,8 @@ const storyMiddlewares = require('../middlewares/storyMiddlewares');
 router
     .route('/')
     .get(storyController.getAllStories)
-    .post(auth.authorize, storyController.postStory)
-    .delete(storyController.deleteAllStories);
+    .post(auth.authorize, storyMiddlewares.creatable, storyController.postStory);
+// .delete(storyController.deleteAllStories);
 
 router
     .route('/:id')
