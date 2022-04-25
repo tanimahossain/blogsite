@@ -10,16 +10,14 @@ exports.negotiateData = async (Data, req, res, next) => {
     let data = JSON.parse(JSON.stringify(Data));
     data.status = 'success';
     if (arr.find((val) => val.trim() === 'application/json')) {
-        res.header('Content-Type', 'application/json');
-        res.status(200).send(data);
-    } else if (!arr.length || arr.find((val) => val === '*/*')) {
-        res.header('Content-Type', 'application/json');
-        res.status(200).send(data);
-    } else if (arr.find((val) => val === 'text/html')) {
-        res.header('Content-Type', 'text/html');
-        data = json2html.render(data);
-        res.status(200).send(data);
-    } else {
-        next(new AppError("can't serve the data you wanted", 404));
+        return res.header('Content-Type', 'application/json').status(200).send(data);
     }
+    if (!arr.length || arr.find((val) => val === '*/*')) {
+        return res.header('Content-Type', 'application/json').status(200).send(data);
+    }
+    if (arr.find((val) => val === 'text/html')) {
+        data = json2html.render(data);
+        return res.header('Content-Type', 'text/html').status(200).send(data);
+    }
+    return next(new AppError("can't serve the data you wanted", 404));
 };

@@ -43,7 +43,6 @@ exports.signUp = catchAsync(async (req, res, next) => {
                 eMail: userInfo.eMail,
             },
         };
-
         negotiate.negotiateData(Data, req, res, next);
     });
 });

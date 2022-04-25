@@ -18,11 +18,21 @@ exports.matchUser = catchAsync(async (req, res, next) => {
         },
     }).then((storyData) => {
         if (!storyData.authorUsername) {
-            next(new AppError('No such story', 404));
+            return next(new AppError('No such story', 404));
         }
         if (storyData.authorUsername !== payload.userName) {
-            next(new AppError('Not your story', 403));
+            return next(new AppError('Not your story', 403));
         }
-        next();
+        return next();
     });
 });
+
+exports.updatable = (req, res, next) => {
+    if (req.body.authorUserName) {
+        return next(new AppError("You can't change the owner of the post", 403));
+    }
+    if (req.body.storyId || req.body.storyNo) {
+        return next(new AppError("You can't change story identifier", 403));
+    }
+    return next();
+};

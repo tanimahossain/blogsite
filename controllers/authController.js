@@ -36,15 +36,15 @@ exports.parseToken = async (req, res, next) => {
 
 exports.authorize = catchAsync(async (req, res, next) => {
     let payload;
+    console.log('came here 1');
     await this.parseToken(req, res, next).then((val) => {
         console.log(val);
         payload = val;
     });
-    console.log(typeof payload, payload);
     if (!payload.userName) {
-        next(new AppError('Please log in First', 401));
+        return next(new AppError('Please log in First', 401));
     }
-    console.log(typeof payload, payload);
+
     /// User Exists
     const userStillExists = await User.findOne({
         attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
@@ -53,14 +53,15 @@ exports.authorize = catchAsync(async (req, res, next) => {
         },
     });
     if (!userStillExists) {
-        next(new AppError('User not found!', 404));
+        return next(new AppError('User not found!', 404));
     }
 
     /// If password changed after issuing this token
     if (userStillExists.passChanged > payload.iat) {
-        next(new AppError('Please log in again', 401));
+        return next(new AppError('Please log in again', 401));
     }
-    next();
+    console.log('came here');
+    return next();
 });
 
 exports.logIn = catchAsync(async (req, res, next) => {
@@ -69,7 +70,7 @@ exports.logIn = catchAsync(async (req, res, next) => {
 
     /// Provided username and password
     if (!userInfo.userName || !userInfo.password) {
-        next(new AppError('Please provide username password correctly', 400));
+        return next(new AppError('Please provide username password correctly', 400));
     }
 
     /// Username exists
@@ -80,18 +81,17 @@ exports.logIn = catchAsync(async (req, res, next) => {
         },
     });
     if (!userCheck) {
-        next(new AppError('No such user', 404));
+        return next(new AppError('Username or Password wrong', 401));
     }
 
     /// Password is Correct
     const flag = await hashString.checkHash(userCheck.password, userInfo.password);
-    console.log(`inflag: ${!flag}`);
+    console.log(`inflag: ${!flag}`, flag);
     if (!flag) {
-        console.log('got in');
-        next(new AppError('Wrong password', 401));
+        return next(new AppError('Username or password wrong', 401));
     }
     const token = this.getToken({ userName: userInfo.userName });
-    res.status(200).send({
+    return res.status(200).send({
         status: 'logges In successfully',
         userName: userInfo.userName,
         token,

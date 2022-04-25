@@ -14,11 +14,20 @@ const Story = dbConfig.sequelize.define('story', {
     },
     authorName: {
         type: DataTypes.STRING,
-        allowNull: false,
     },
     storyTitle: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+            notNull: {
+                arg: true,
+                msg: 'Title can not be null',
+            },
+            notEmpty: {
+                arg: true,
+                msg: 'Title can not be empty',
+            },
+        },
     },
     openingLines: {
         type: DataTypes.STRING,
@@ -27,6 +36,16 @@ const Story = dbConfig.sequelize.define('story', {
     storyDescription: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+            notNull: {
+                arg: true,
+                msg: 'Story can not be null',
+            },
+            notEmpty: {
+                arg: true,
+                msg: 'Story can not be empty',
+            },
+        },
     },
 });
 

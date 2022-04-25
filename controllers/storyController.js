@@ -13,7 +13,6 @@ exports.deleteAllStories = (req, res, next) => {
 
 /// For a single story///
 exports.getStory = (req, res, next) => {
-    console.log(req.body);
     storyServices.getStory(req, res, next);
 };
 

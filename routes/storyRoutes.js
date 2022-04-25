@@ -16,7 +16,13 @@ router
 router
     .route('/:id')
     .get(storyController.getStory)
-    .put(auth.authorize, storyMiddlewares.matchUser, storyController.updateStory) /// edit a story
+    .put(
+        auth.authorize,
+        storyMiddlewares.updatable,
+        storyMiddlewares.matchUser,
+        // eslint-disable-next-line comma-dangle
+        storyController.updateStory
+    ) /// edit a story
     .delete(auth.authorize, storyMiddlewares.matchUser, storyController.deleteStory);
 
 module.exports = router;

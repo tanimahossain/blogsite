@@ -27,6 +27,7 @@ db.Stories.belongsTo(db.Users, {
     foreignKey: 'authorUsername',
 });
 db.dataSync = async () => {
+    await db.sequelize.sync({ force: true });
     try {
         await db.sequelize.sync({ force: true });
         console.log('data synced...');
