@@ -3,7 +3,7 @@ const dbConfig = require('../database/dbConfig');
 
 const Story = dbConfig.sequelize.define('story', {
     storyId: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100),
         allowNull: false,
         primaryKey: true,
         unique: true,
@@ -13,10 +13,16 @@ const Story = dbConfig.sequelize.define('story', {
         allowNull: false,
     },
     authorName: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(105),
+        validate: {
+            len: {
+                args: [1, 100],
+                msg: 'The Author Name can have a length maximum of 100 characters.',
+            },
+        },
     },
     storyTitle: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(350),
         allowNull: false,
         validate: {
             notNull: {
@@ -27,6 +33,10 @@ const Story = dbConfig.sequelize.define('story', {
                 arg: true,
                 msg: 'Title can not be empty',
             },
+            len: {
+                args: [1, 100],
+                msg: 'Story Title can have a length maximum of 100 characters.',
+            },
         },
     },
     openingLines: {
@@ -34,7 +44,7 @@ const Story = dbConfig.sequelize.define('story', {
         allowNull: false,
     },
     storyDescription: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(10005),
         allowNull: false,
         validate: {
             notNull: {
@@ -44,6 +54,10 @@ const Story = dbConfig.sequelize.define('story', {
             notEmpty: {
                 arg: true,
                 msg: 'Story can not be empty',
+            },
+            len: {
+                args: [1, 10000],
+                msg: "Release your post into episodes it's large for a single one",
             },
         },
     },

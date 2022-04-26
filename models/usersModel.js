@@ -7,7 +7,7 @@ const User = dbConfig.sequelize.define(
     'user',
     {
         userName: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(55),
             primaryKey: true,
             allowNull: false,
             unique: true,
@@ -24,10 +24,14 @@ const User = dbConfig.sequelize.define(
                     arg: true,
                     msg: 'Username can not be empty',
                 },
+                len: {
+                    args: [1, 50],
+                    msg: 'The username can have a length maximum of 50 characters.',
+                },
             },
         },
         fullName: {
-            type: DataTypes.STRING(50),
+            type: DataTypes.STRING(105),
             allowNull: false,
             validate: {
                 notNull: {
@@ -38,10 +42,14 @@ const User = dbConfig.sequelize.define(
                     arg: true,
                     msg: 'Full Name can not be empty',
                 },
+                len: {
+                    args: [1, 100],
+                    msg: 'The Full Name can have a length maximum of 100 characters.',
+                },
             },
         },
         eMail: {
-            type: DataTypes.STRING(100),
+            type: DataTypes.STRING(400),
             allowNull: false,
             unique: true,
             validate: {
@@ -56,6 +64,10 @@ const User = dbConfig.sequelize.define(
                 notEmpty: {
                     arg: true,
                     msg: 'Email can not be empty',
+                },
+                len: {
+                    args: [1, 400],
+                    msg: 'The username can have a length maximum of 400 characters.',
                 },
             },
         },

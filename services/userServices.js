@@ -10,24 +10,31 @@ exports.getUser = catchAsync(async (req, res, next) => {
     await User.findAll({
         attributes: { exclude: ['password', 'createdAt', 'updatedAt', 'passChanged'] },
         where: {
-            userName: req.params.id,
+            userName: req.params.id.trim(),
         },
     }).then((userData) => {
-        const Data = {
-            status: 'User data fetched sucessfully',
+        let Data = {
+            status: 'success',
+            message: 'User data fetched sucessfully',
             userData,
         };
+        if (userData.length === 0) {
+            req.status = 404;
+            Data = {
+                status: 'failed',
+                message: 'No such user',
+            };
+        }
         negotiate.negotiateData(Data, req, res, next);
     });
 });
 
 exports.signUp = catchAsync(async (req, res, next) => {
-    const hash = req.body.password;
     const userInfo = {
-        userName: req.body.userName.toLowerCase(),
-        fullName: req.body.fullName,
-        eMail: req.body.eMail,
-        password: hash,
+        userName: req.body.userName.toLowerCase().trim(),
+        fullName: req.body.fullName.trim(),
+        eMail: req.body.eMail.trim(),
+        password: req.body.password.trim(),
         passChanged: Math.floor(Date.now() / 1000),
     };
     await User.create(userInfo).then(() => {
@@ -55,8 +62,7 @@ exports.updateUser = catchAsync(async (req, res, next) => {
     const payload = await authController.parseToken(req, res, next);
     if (req.body.password) {
         userInfo.passChanged = Math.floor(Date.now() / 1000);
-        const hash = req.body.password;
-        userInfo.password = (await hash).toString();
+        userInfo.password = req.body.password;
         const token = authController.getToken({ userName: payload.userName });
         msg = {
             status: 'User updated Succesfully.',
@@ -105,10 +111,17 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
     await User.findAll({
         attributes: { exclude: ['password', 'createdAt', 'updatedAt', 'passChanged'] },
     }).then((userData) => {
-        const Data = {
+        let Data = {
             status: 'User data fetched sucessfully',
             userData,
         };
+        if (userData.length === 0) {
+            req.status = 404;
+            Data = {
+                status: 'failed',
+                message: 'There are no user',
+            };
+        }
         negotiate.negotiateData(Data, req, res, next);
     });
 });

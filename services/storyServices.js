@@ -6,14 +6,22 @@ const catchAsync = require('../utilities/catchAsync');
 /// For a single user///
 exports.getStory = catchAsync(async (req, res, next) => {
     await Story.findAll({
+        attributes: { exclude: ['storyNo'] },
         where: {
-            storyId: req.params.id,
+            storyId: req.params.id.trim(),
         },
     }).then((storyData) => {
-        const Data = {
+        let Data = {
             status: 'User data fetched sucessfully',
             storyData,
         };
+        if (storyData.length === 0) {
+            req.status = 404;
+            Data = {
+                status: 'failed',
+                message: 'No such story',
+            };
+        }
         negotiate.negotiateData(Data, req, res, next);
     });
 });
@@ -34,8 +42,8 @@ exports.postStory = catchAsync(async (req, res, next) => {
         storyId: `${payload.userName}_${mx}`,
         storyNo: mx,
         authorUsername: payload.userName,
-        authorName: req.body.authorName,
-        storyTitle: req.body.storyTitle,
+        authorName: req.body.authorName.trim(),
+        storyTitle: req.body.storyTitle.trim(),
         openingLines: `${req.body.storyDescription.slice(0, 100)}...`,
         storyDescription: req.body.storyDescription,
     };
@@ -58,9 +66,11 @@ exports.updateStory = catchAsync(async (req, res, next) => {
     if (req.body.storyDescription) {
         storyInfo.openingLines = `${req.body.storyDescription.slice(0, 100)}...`;
     }
-    await Story.update(req.body, {
+    if (storyInfo.authorName) storyInfo.authorName = storyInfo.authorName.trim();
+    if (storyInfo.storyTitle) storyInfo.storyTitle = storyInfo.storyTitle.trim();
+    await Story.update(storyInfo, {
         where: {
-            storyId: req.params.id,
+            storyId: req.params.id.trim(),
         },
     }).then(() => {
         const Data = {
@@ -74,7 +84,7 @@ exports.updateStory = catchAsync(async (req, res, next) => {
 exports.deleteStory = catchAsync(async (req, res, next) => {
     await Story.destroy({
         where: {
-            storyId: req.params.id,
+            storyId: req.params.id.trim(),
         },
     }).then(() => {
         const Data = {
@@ -96,13 +106,20 @@ exports.deleteAllStories = catchAsync(async (req, res, next) => {
 
 exports.getAllStories = catchAsync(async (req, res, next) => {
     await Story.findAll({
-        attributes: { exclude: ['storyDescription'] },
+        attributes: { exclude: ['storyDescription', 'storyNo'] },
     }).then((storyData) => {
-        const Data = {
+        console.log(storyData.length);
+        let Data = {
             status: 'success',
-            message: 'Story fetched Successfully',
+            message: 'Stories fetched Successfully',
             storyData,
         };
+        if (storyData.length === 0) {
+            Data = {
+                status: 'failed',
+                message: 'No Stories to fetch',
+            };
+        }
         negotiate.negotiateData(Data, req, res, next);
     });
 });

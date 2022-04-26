@@ -10,13 +10,14 @@ exports.negotiateData = async (Data, req, res, next) => {
     let data = JSON.parse(JSON.stringify(Data));
 
     let statusCode = 200;
-    if (req.statusCode) {
+    if (req.status) {
         statusCode = req.status;
     }
 
-    data.status = 'success';
-    if (data.status.startsWith('4')) data.status = 'failed';
-    else if (data.status.startsWith('5')) data.status = 'error';
+    if (!data.status) data.status = 'success';
+    const check = `${statusCode}`;
+    if (check.startsWith('4')) data.status = 'failed';
+    else if (check.startsWith('5')) data.status = 'error';
 
     if (arr.find((val) => val.trim() === 'application/json')) {
         return res.header('Content-Type', 'application/json').status(statusCode).send(data);
