@@ -12,13 +12,13 @@ const User = dbConfig.sequelize.define(
             allowNull: false,
             unique: true,
             validate: {
+                is: {
+                    args: /^[a-z]+[0-9a-z.]+$/g,
+                    msg: 'Only use latin letters or digits, starting with a digit',
+                },
                 notNull: {
                     arg: true,
                     msg: 'Username can not be null',
-                },
-                isAlphanumeric: {
-                    arg: true,
-                    msg: 'Characters you used are not allowed. It must be Alphanumeric',
                 },
                 notEmpty: {
                     arg: true,
@@ -75,6 +75,10 @@ const User = dbConfig.sequelize.define(
             type: DataTypes.STRING(500),
             allowNull: false,
             validate: {
+                is: {
+                    args: /^[0-9a-zA-Z~`!@#$%^&*.()-_+={}[\]|\\/:;"'<>,?]+$/g,
+                    msg: 'Only use latin letters or digits',
+                },
                 notNull: {
                     arg: true,
                     msg: 'Password can not be null',
