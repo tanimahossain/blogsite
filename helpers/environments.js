@@ -15,8 +15,7 @@ env.production = {
     jwtSecretKey: 'blogsite-by-tanima-hossain-production',
     jwtExpire: '30d',
 };
-
-const currenv = typeof process.env.NODE_ENV === 'string' ? process.env.NODE_ENV : 'staging';
+const currenv = process.env.NODE_ENV;
 
 // export corresponding environment object
 const envToExport = typeof env[currenv] === 'object' ? env[currenv] : env.staging;

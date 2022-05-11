@@ -7,7 +7,6 @@ const AppError = require('./appError');
 
 exports.matchUser = catchAsync(async (req, res, next) => {
     let payload;
-    console.log(req.headers);
     await authController.parseToken(req, res, next).then((userData) => {
         payload = userData;
     });
@@ -18,7 +17,7 @@ exports.matchUser = catchAsync(async (req, res, next) => {
             storyId: req.params.id,
         },
     }).then((storyData) => {
-        if (!storyData.authorUsername) {
+        if (!storyData) {
             return next(new AppError('No such story', 404));
         }
         if (storyData.authorUsername !== payload.userName) {
@@ -57,7 +56,6 @@ exports.creatable = catchAsync(async (req, res, next) => {
             },
         });
         req.body.authorName = user.fullName;
-        console.log(payload, req.body.authorName);
     }
     if (req.body.storyTitle) cnt += 1;
     if (req.body.storyDescription) cnt += 1;

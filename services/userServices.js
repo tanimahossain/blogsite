@@ -1,127 +1,133 @@
 /// Dependencies///
 const User = require('../models/usersModel');
 const authController = require('../controllers/authController');
-const negotiate = require('../utilities/contentNegotiation');
-const catchAsync = require('../utilities/catchAsync');
+const AppError = require('../middlewares/appError');
 /// Dependencies///
 
 /// For a single user///
-exports.getUser = catchAsync(async (req, res, next) => {
-    await User.findAll({
+exports.getUser = async (req, res, next) => {
+    let Data;
+    Data = await User.findOne({
         attributes: { exclude: ['password', 'createdAt', 'updatedAt', 'passChanged'] },
         where: {
             userName: req.params.id.trim(),
         },
-    }).then((userData) => {
-        let Data = {
+    });
+    if(Data !== null && !Data){
+        return next(new AppError(`Something went wrong`, 500));
+    } else{
+        Data = {
             status: 'success',
             message: 'User data fetched sucessfully',
-            userData,
+            userData: Data,
         };
-        if (userData.length === 0) {
-            req.status = 404;
-            Data = {
-                status: 'failed',
-                message: 'No such user',
-            };
-        }
-        negotiate.negotiateData(Data, req, res, next);
-    });
-});
+    }
+    if (!Data.userData) {
+        req.status = 404;
+        Data = {
+            status: 'failed',
+            message: 'No such user',
+        };
+    } else
+        req.status = 200;
+    return Data;
+};
 
-exports.signUp = catchAsync(async (req, res, next) => {
+exports.signUp = async (req, res, next) => {
     const userInfo = {
         userName: req.body.userName.toLowerCase().trim(),
         fullName: req.body.fullName.trim(),
         eMail: req.body.eMail.trim(),
         password: req.body.password.trim(),
         passChanged: Math.floor(Date.now() / 1000),
+        passChangedFlag: true,
     };
-    await User.create(userInfo).then(() => {
-        const token = authController.getToken({ userName: userInfo.userName });
-        const Data = {
-            status: 'Sign Up completed successfully!',
-            token,
-            data: {
-                userName: userInfo.userName,
-                fullName: userInfo.fullName,
-                eMail: userInfo.eMail,
-            },
-        };
-        req.status = 201;
-        negotiate.negotiateData(Data, req, res, next);
-    });
-});
+    await User.create(userInfo);
+    const token = authController.getToken({ userName: userInfo.userName });
+    const Data = {
+        status: 'success',
+        message: 'Sign Up completed successfully!',
+        userName: userInfo.userName,
+        fullName: userInfo.fullName,
+        eMail: userInfo.eMail,
+        token,
+    };
+    req.status = 201;
+    return Data;
+};
 
-exports.updateUser = catchAsync(async (req, res, next) => {
-    console.log(req.body);
+exports.updateUser = async (req, res, next) => {
+    let token;
     const userInfo = req.body;
-    let msg = {
-        status: 'User updated Succesfully.',
-    };
-    const payload = await authController.parseToken(req, res, next);
     if (req.body.password) {
         userInfo.passChanged = Math.floor(Date.now() / 1000);
-        userInfo.password = req.body.password;
-        const token = authController.getToken({ userName: payload.userName });
-        msg = {
-            status: 'User updated Succesfully.',
-            token,
-        };
+        token = authController.getToken({ userName: req.payload.userName });
+        userInfo.passChangedFlag = true;
+    } else{
+        userInfo.passChangedFlag = false;
     }
     await User.update(userInfo, {
         where: {
-            userName: payload.userName,
+            userName: req.payload.userName,
         },
-    }).then(() => {
-        negotiate.negotiateData(msg, req, res, next);
     });
-});
+    const Data = {
+        status: 'success',
+        message: 'User information updated Successfully',
+        userName: req.payload.userName,
+        token,
+    };
+    req.status = 200;
+    return Data;
+};
 
-exports.deleteUser = catchAsync(async (req, res, next) => {
-    const payload = await authController.parseToken(req, res, next);
+exports.deleteUser = async (req, res, next) => {
     await User.destroy({
         where: {
-            userName: payload.userName,
+            userName: req.payload.userName,
         },
-    }).then(() => {
-        const Data = {
-            status: 'success',
-            message: 'User deleted Successfully',
-        };
-        negotiate.negotiateData(Data, req, res, next);
     });
-});
+    const Data = {
+        status: 'success',
+        message: 'User deleted Successfully',
+    };
+    req.status = 200;
+    return Data;
+};
 
 /// For all the users///
-exports.deleteAllUsers = catchAsync(async (req, res, next) => {
-    await User.destroy({
-        truncate: true,
-    }).then(() => {
-        const Data = {
-            status: 'success',
-            message: 'All user deleted Successfully',
-        };
-        negotiate.negotiateData(Data, req, res, next);
-    });
-});
+// exports.deleteAllUsers = catchAsync(async (req, res, next) => {
+//     await User.destroy({
+//         truncate: true,
+//     }).then(() => {
+//         const Data = {
+//             status: 'success',
+//             message: 'All user deleted Successfully',
+//         };
+//         negotiate.negotiateData(Data, req, res, next);
+//     });
+// });
 
-exports.getAllUsers = catchAsync(async (req, res, next) => {
-    console.log(req.body);
-    await User.findAll({
-        attributes: { exclude: ['password', 'createdAt', 'updatedAt', 'passChanged'] },
-    }).then((userData) => {
-        let Data = {
-            status: 'User data fetched sucessfully',
-            userData,
-        };
-        if (userData.length === 0) {
-            req.status = 404;
-            Data = {
-                status: 'failed',
-                message: 'There are no user',
-            };
-        }
-        negotiate.negotiateData(Data, req, res, next);
+exports.getAllUsers = async (req, res, next) => {
+    let Data;
+    Data = await User.findAll({
+        attributes: { exclude: ['password', 'createdAt', 'updatedAt', 'passChanged', 'passChangedFlag'] },
     });
-});
+    if(!Data){
+        req.status = 500;
+        return next(new AppError("Can't serve the data you wanted", 500));
+    } else {
+        Data = {
+            status: 'success',
+            message: 'User data fetched sucessfully',
+            count: Data.length,
+            userData: Data,
+        };
+    }
+    if (Data.count === 0) {
+        req.status = 200;
+        Data.message ='There are no user';
+    } else
+        req.status = 200;
+    return Data;
+};

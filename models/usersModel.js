@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, BOOLEAN } = require('sequelize');
 const { sequelize } = require('sequelize');
 const dbConfig = require('../database/dbConfig');
 const hashString = require('../utilities/hashString');
@@ -31,7 +31,7 @@ const User = dbConfig.sequelize.define(
             },
         },
         fullName: {
-            type: DataTypes.STRING(105),
+            type: DataTypes.STRING(255),
             allowNull: false,
             validate: {
                 notNull: {
@@ -44,7 +44,7 @@ const User = dbConfig.sequelize.define(
                 },
                 len: {
                     args: [1, 100],
-                    msg: 'The Full Name can have a length maximum of 100 characters.',
+                    msg: 'The Full Name can have a length maximum of 250 characters.',
                 },
             },
         },
@@ -97,19 +97,25 @@ const User = dbConfig.sequelize.define(
             type: DataTypes.BIGINT.UNSIGNED,
             allowNull: false,
         },
+        passChangedFlag: {
+            type: BOOLEAN,
+            allowNull: false,
+        },
     },
     {
         hooks: {
             //
         },
         sequelize,
-        // eslint-disable-next-line prettier/prettier
     },
 );
 
 User.addHook('afterValidate', async (req) => {
-    const hash = await hashString.makeHash(req.password);
-    req.password = hash;
+    if(req.passChangedFlag===true){
+        const hash = await hashString.makeHash(req.password);
+        req.password = hash;
+        req.passChangedFlag = false;
+    }
 });
 
 module.exports = User;

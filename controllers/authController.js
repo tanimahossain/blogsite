@@ -6,6 +6,7 @@ const User = require('../models/usersModel');
 const hashString = require('../utilities/hashString');
 const catchAsync = require('../utilities/catchAsync');
 const AppError = require('../middlewares/appError');
+const negotiate = require('../utilities/contentNegotiation');
 /// dependencies ///
 
 exports.getToken = (userInfo) => {
@@ -22,55 +23,58 @@ exports.parseToken = async (req, res, next) => {
         const { 1: arr } = req.headers.authorization.split(' ');
         token = arr;
     } else {
-        next(new AppError('Please log in First', 401));
+        return next(new AppError('Please log in First', 401));
     }
     /// Verification of Token
     let payload;
-    await promisify(jwt.verify)(token, environments.jwtSecretKey).then((val) => {
-        payload = val;
-        console.log(val);
-    });
-    console.log(payload);
-    return payload;
+    try{
+        payload = await promisify(jwt.verify)(token, environments.jwtSecretKey);
+    } catch(err){
+        return next(new AppError('Could not verify your token',401));
+    }
+    if(!payload.userName)
+        return next(new AppError('Could not verify your token',401));
+    else
+        return payload;
 };
 
 exports.authorize = catchAsync(async (req, res, next) => {
-    let payload;
-    await this.parseToken(req, res, next).then((val) => {
-        console.log(val);
-        payload = val;
-    });
-    console.log('came here 1', payload);
-    if (!payload.userName) {
+    const payload = await this.parseToken(req, res, next);
+    if (!payload || !payload.userName) {
         return next(new AppError('Please log in First', 401));
+    } else{
+        req.payload = payload;
     }
 
     /// User Exists
     const userStillExists = await User.findOne({
-        attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
+        attributes: { exclude: ['password', 'createdAt', 'updatedAt', 'passChangedFlag'] },
         where: {
             userName: payload.userName,
         },
     });
+
     if (!userStillExists) {
         return next(new AppError('User not found!', 404));
+    } else{
+        /// If password changed after issuing this token
+        if (userStillExists.passChanged > payload.iat) {
+            return next(new AppError('Please log in again', 401));
+        } else{
+            return next();
+        }
     }
-
-    /// If password changed after issuing this token
-    if (userStillExists.passChanged > payload.iat) {
-        return next(new AppError('Please log in again', 401));
-    }
-    console.log('came here');
-    return next();
 });
 
 exports.logIn = catchAsync(async (req, res, next) => {
-    console.log(req.body);
-    const userInfo = req.body;
+    let userInfo;
 
     /// Provided username and password
-    if (!userInfo.userName || !userInfo.password) {
+    if (!req.body.userName || !req.body.password) {
+        req.status = 400;
         return next(new AppError('Please provide username password correctly', 400));
+    } else{
+        userInfo = req.body;
     }
 
     /// Username exists
@@ -80,20 +84,25 @@ exports.logIn = catchAsync(async (req, res, next) => {
             userName: userInfo.userName,
         },
     });
+    let Data;
     if (!userCheck) {
+        req.status = 401;
         return next(new AppError('Username or Password wrong', 401));
+    } else {
+        /// Password is Correct
+        const flag = await hashString.checkHash(userCheck.password, userInfo.password);
+        if (!flag) {
+            req.status = 401;
+            return next(new AppError('Username or password wrong', 401));
+        } else
+            req.status = 200;
+        const token = this.getToken({ userName: userInfo.userName });
+        Data = {
+            status: 'success',
+            message: 'logges In successfully',
+            userName: userInfo.userName,
+            token,
+        };
     }
-
-    /// Password is Correct
-    const flag = await hashString.checkHash(userCheck.password, userInfo.password);
-    console.log(`inflag: ${!flag}`, flag);
-    if (!flag) {
-        return next(new AppError('Username or password wrong', 401));
-    }
-    const token = this.getToken({ userName: userInfo.userName });
-    return res.status(200).send({
-        status: 'logges In successfully',
-        userName: userInfo.userName,
-        token,
-    });
+    return await negotiate.negotiateData(Data, req, res, next);
 });

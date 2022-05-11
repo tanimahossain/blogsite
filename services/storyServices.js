@@ -1,125 +1,129 @@
 const Story = require('../models/storiesModel');
-const authController = require('../controllers/authController');
-const negotiate = require('../utilities/contentNegotiation');
-const catchAsync = require('../utilities/catchAsync');
+const AppError = require('../middlewares/appError');
 
 /// For a single user///
-exports.getStory = catchAsync(async (req, res, next) => {
-    await Story.findAll({
+exports.getStory = async (req, res, next) => {
+    let Data;
+    Data = await Story.findOne({
         attributes: { exclude: ['storyNo'] },
         where: {
             storyId: req.params.id.trim(),
         },
-    }).then((storyData) => {
-        let Data = {
-            status: 'User data fetched sucessfully',
-            storyData,
+    })
+    if(Data !== null && !Data){
+        return next(new AppError(`Something went wrong`, 500));
+    }
+    req.status = 200;
+    Data = {
+        status: 'success',
+        message: 'User data fetched sucessfully',
+        storyData: Data,
+    };
+    if (!Data.storyData) {
+        req.status = 404;
+        Data = {
+            status: 'failed',
+            message: 'No such story',
         };
-        if (storyData.length === 0) {
-            req.status = 404;
-            Data = {
-                status: 'failed',
-                message: 'No such story',
-            };
-        }
-        negotiate.negotiateData(Data, req, res, next);
-    });
-});
+    }
+    req.status = 200;
+    return Data;
+};
 
-exports.postStory = catchAsync(async (req, res, next) => {
+exports.postStory = async (req, res, next) => {
     let mx = 0;
-    let payload;
-    console.log(req.headers);
-    await authController.parseToken(req, res, next).then((val) => {
-        payload = val;
+    mx = await Story.max('storyNo', {
+        where: { authorUsername: req.payload.userName },
     });
-    await Story.max('storyNo', {
-        where: { authorUsername: payload.userName },
-    }).then((stryNo) => {
-        mx = stryNo + 1;
-    });
+    if (typeof mx === 'undefined') {
+        return next(new AppError('Something went wrong', 500));
+    }
+    mx += 1;
     const storyInfo = {
-        storyId: `${payload.userName}_${mx}`,
+        storyId: `${req.payload.userName}_${mx}`,
         storyNo: mx,
-        authorUsername: payload.userName,
+        authorUsername: req.payload.userName,
         authorName: req.body.authorName.trim(),
         storyTitle: req.body.storyTitle.trim(),
         openingLines: `${req.body.storyDescription.slice(0, 100)}...`,
         storyDescription: req.body.storyDescription,
     };
-    await Story.create(storyInfo).then(() => {
-        const Data = {
-            status: 'success',
-            message: 'story Created Succesfully.',
-            storyId: storyInfo.storyId,
-            authorName: storyInfo.authorName,
-            storyTitle: storyInfo.storyTitle,
-            openingLines: storyInfo.openingLines,
-        };
-        req.status = 201;
-        negotiate.negotiateData(Data, req, res, next);
-    });
-});
+    await Story.create(storyInfo);
+    const Data = {
+        status: 'success',
+        message: 'Story Created Succesfully.',
+        storyId: storyInfo.storyId,
+        authorName: storyInfo.authorName,
+        storyTitle: storyInfo.storyTitle,
+        openingLines: storyInfo.openingLines,
+    };
+    req.status = 201;
+    return Data;
+};
 
-exports.updateStory = catchAsync(async (req, res, next) => {
+exports.updateStory = async (req, res, next) => {
     const storyInfo = req.body;
     if (req.body.storyDescription) {
         storyInfo.openingLines = `${req.body.storyDescription.slice(0, 100)}...`;
+    } else{
+        storyInfo.openingLines = req.body.storyDescription;
     }
     if (storyInfo.authorName) storyInfo.authorName = storyInfo.authorName.trim();
+    else storyInfo.authorName = req.body.authorName;
     if (storyInfo.storyTitle) storyInfo.storyTitle = storyInfo.storyTitle.trim();
+    else storyInfo.storyTitle = req.body.storyTitle;
     await Story.update(storyInfo, {
         where: {
             storyId: req.params.id.trim(),
         },
-    }).then(() => {
-        const Data = {
-            status: 'success',
-            message: 'Story updated Successfully',
-        };
-        negotiate.negotiateData(Data, req, res, next);
     });
-});
+    const Data = {
+        status: 'success',
+        message: 'Story updated Successfully',
+    };
+    req.status = 200;
+    return Data;
+};
 
-exports.deleteStory = catchAsync(async (req, res, next) => {
+exports.deleteStory = async (req, res, next) => {
     await Story.destroy({
         where: {
             storyId: req.params.id.trim(),
         },
-    }).then(() => {
-        const Data = {
-            status: 'success',
-            message: 'Story deleted Successfully',
-        };
-        negotiate.negotiateData(Data, req, res, next);
     });
-});
+    const Data = {
+        status: 'success',
+        message: 'Story deleted Successfully',
+    };
+    req.status = 200;
+    return Data;
+};
 
 /// For all the stories///
-exports.deleteAllStories = catchAsync(async (req, res, next) => {
-    await Story.destroy({
-        truncate: true,
-    }).then(() => {
-        res.status(200).send('All stories deleted Succesfully.');
-    });
-});
+// exports.deleteAllStories = catchAsync(async (req, res, next) => {
+//     await Story.destroy({
+//         truncate: true,
+//     }).then(() => {
+//         res.status(200).send('All stories deleted Succesfully.');
+//     });
+// });
 
-exports.getAllStories = catchAsync(async (req, res, next) => {
-    await Story.findAll({
+exports.getAllStories = async (req, res, next) => {
+    let Data;
+    Data = await Story.findAll({
         attributes: { exclude: ['storyDescription', 'storyNo'] },
-    }).then((storyData) => {
-        console.log(storyData.length);
-        let Data = {
-            status: 'success',
-            message: 'Stories fetched Successfully',
-            storyData,
-        };
-        if (storyData.length === 0) {
-            Data = {
-                status: 'failed',
-                message: 'No Stories to fetch',
-            };
-        }
-        negotiate.negotiateData(Data, req, res, next);
     });
-});
+    if(!Data)
+        return next(new AppError("Can't serve the data you wanted", 500));
+    Data = {
+        status: 'success',
+        message: 'Stories fetched Successfully',
+        count: Data.length,
+        storyData: Data,
+    };
+    if (Data.count === 0) {
+        Data.message ='No Stories to fetch';
+    }
+    req.status = 200;
+    return Data;
+};
