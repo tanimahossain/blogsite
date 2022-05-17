@@ -11,15 +11,15 @@ const mockCreateUsers = {
 };
 const mockUsersResponse = [
     {
-        "userName": "tanimahossain",
-        "fullName": "Tanima Hossain",
-        "eMail": "tanima@gmail.com"
+        userName: 'tanimahossain',
+        fullName: 'Tanima Hossain',
+        eMail: 'tanima@gmail.com',
     },
     {
-        "userName": "tanimhossain",
-        "fullName": "Tanima Hossain",
-        "eMail": "tanim@gmail.com"
-    }
+        userName: 'tanimhossain',
+        fullName: 'Tanima Hossain',
+        eMail: 'tanim@gmail.com',
+    },
 ];
 const mockUserResponse = {
     userName: 'tanimahossain',
@@ -29,7 +29,7 @@ const mockUserResponse = {
 };
 describe('User SignUP', () => {
     test('create all okay', async () => {
-        jest.restoreAllMocks()
+        jest.restoreAllMocks();
         const mockReq = mockRequest({ body: mockCreateUsers });
         const mockRes = mockResponse();
         const mockNext = jest.fn();
@@ -49,16 +49,18 @@ describe('View A User', () => {
     test('view perfectly fine', async () => {
         jest.clearAllMocks();
         const mockReq = mockRequest({
-            params:{
-                id: 'tanimahossain'
-            }
+            params: {
+                id: 'tanimahossain',
+            },
         });
         const mockRes = mockResponse();
         const mockNext = jest.fn();
         jest.spyOn(User, 'findOne').mockReturnValue(mockUserResponse);
         const Data = await services.getUser(mockReq, mockRes, mockNext);
         expect(User.findOne).toHaveBeenCalledWith({
-            attributes: { exclude: ['password', 'createdAt', 'updatedAt', 'passChanged'] },
+            attributes: {
+                exclude: ['password', 'createdAt', 'updatedAt', 'passChanged', 'passChagedFlag'],
+            },
             where: {
                 userName: mockReq.params.id.trim(),
             },
@@ -72,9 +74,9 @@ describe('View A User', () => {
     test('view if1', async () => {
         jest.clearAllMocks();
         const mockReq = mockRequest({
-            params:{
-                id: 'tanimahossain'
-            }
+            params: {
+                id: 'tanimahossain',
+            },
         });
         const mockRes = mockResponse();
         const mockNext = jest.fn();
@@ -93,9 +95,9 @@ describe('View A User', () => {
     test('view if2', async () => {
         jest.clearAllMocks();
         const mockReq = mockRequest({
-            params:{
-                id: 'tanimahossain'
-            }
+            params: {
+                id: 'tanimahossain',
+            },
         });
         const mockRes = mockResponse();
         const mockNext = jest.fn();
@@ -123,7 +125,9 @@ describe('View all Stories', () => {
         jest.spyOn(User, 'findAll').mockReturnValue(mockUsersResponse);
         const Data = await services.getAllUsers(mockReq, mockRes, mockNext);
         expect(User.findAll).toHaveBeenCalledWith({
-            attributes: { exclude: ['password', 'createdAt', 'updatedAt', 'passChanged', 'passChangedFlag'] },
+            attributes: {
+                exclude: ['password', 'createdAt', 'updatedAt', 'passChanged', 'passChangedFlag'],
+            },
         });
         expect(User.findAll).toHaveBeenCalledTimes(1);
         expect(mockReq.status).toBe(200);
@@ -141,7 +145,9 @@ describe('View all Stories', () => {
         jest.spyOn(User, 'findAll').mockReturnValue([]);
         const Data = await services.getAllUsers(mockReq, mockRes, mockNext);
         expect(User.findAll).toHaveBeenCalledWith({
-            attributes: { exclude: ['password', 'createdAt', 'updatedAt', 'passChanged', 'passChangedFlag'] },
+            attributes: {
+                exclude: ['password', 'createdAt', 'updatedAt', 'passChanged', 'passChangedFlag'],
+            },
         });
         expect(User.findAll).toHaveBeenCalledTimes(1);
         expect(mockReq.status).toBe(200);
@@ -159,7 +165,9 @@ describe('View all Stories', () => {
         jest.spyOn(User, 'findAll').mockReturnValue();
         const Data = await services.getAllUsers(mockReq, mockRes, mockNext);
         expect(User.findAll).toHaveBeenCalledWith({
-            attributes: { exclude: ['password', 'createdAt', 'updatedAt', 'passChanged', 'passChangedFlag'] },
+            attributes: {
+                exclude: ['password', 'createdAt', 'updatedAt', 'passChanged', 'passChangedFlag'],
+            },
         });
         expect(User.findAll).toHaveBeenCalledTimes(1);
         expect(mockReq.status).toBe(500);
@@ -167,7 +175,7 @@ describe('View all Stories', () => {
         expect(Data).toBeUndefined();
     });
 });
-describe("Delete User", () => {
+describe('Delete User', () => {
     test('Delete', async () => {
         jest.clearAllMocks();
         const mockReq = mockRequest({
@@ -175,7 +183,7 @@ describe("Delete User", () => {
                 userName: 'tanimahossain',
                 iat: '165788795687',
                 exp: '165789795687',
-            }
+            },
         });
         const mockRes = mockResponse();
         const mockNext = jest.fn();
@@ -192,16 +200,16 @@ describe("Delete User", () => {
         expect(Data.message).toBe('User deleted Successfully');
     });
 });
-describe("Update User",() => {
+describe('Update User', () => {
     test('update with no password', async () => {
         jest.clearAllMocks();
         const mockReq = mockRequest({
             body: {
-                fullName: 'Tanima Hossain'
+                fullName: 'Tanima Hossain',
             },
             payload: {
-                userName: 'tanimahossain'
-            }
+                userName: 'tanimahossain',
+            },
         });
         const mockRes = mockResponse();
         const mockNext = jest.fn();
@@ -210,7 +218,7 @@ describe("Update User",() => {
         jest.spyOn(User, 'update').mockImplementation((val) => {
             return;
         });
-        jest.spyOn(controller,'getToken').mockReturnValue('ThisIsAToken');
+        jest.spyOn(controller, 'getToken').mockReturnValue('ThisIsAToken');
         jest.spyOn(User, 'update').mockReturnValue();
         const Data = await services.updateUser(mockReq, mockRes, mockNext);
         expect(User.update).toHaveBeenCalledWith(userInfo, {
@@ -230,16 +238,16 @@ describe("Update User",() => {
         const mockReq = mockRequest({
             body: {
                 fullName: 'Tanima Hossain',
-                password: 'tanima12'
+                password: 'tanima12',
             },
             payload: {
-                userName: 'tanimahossain'
-            }
+                userName: 'tanimahossain',
+            },
         });
         const mockRes = mockResponse();
         const mockNext = jest.fn();
         const userInfo = mockReq.body;
-        jest.spyOn(controller,'getToken').mockReturnValue('ThisIsAToken');
+        jest.spyOn(controller, 'getToken').mockReturnValue('ThisIsAToken');
         jest.spyOn(User, 'update').mockReturnValue();
         const Data = await services.updateUser(mockReq, mockRes, mockNext);
         expect(User.update).toHaveBeenCalledWith(userInfo, {

@@ -48,7 +48,7 @@ describe('Get token', () => {
         jest.clearAllMocks();
         jest.spyOn(jwt, 'sign').mockReturnValue('kisueryhfoiauyt');
         const Data = controller.getToken({
-            userName: 'tanimahossain'
+            userName: 'tanimahossain',
         });
         expect(Data).toBeTruthy();
         expect(jwt.sign).toHaveBeenCalledTimes(1);
@@ -58,24 +58,28 @@ describe('Token parsing', () => {
     test('Valid token parse', async () => {
         jwt.sign.mockRestore();
         jest.clearAllMocks();
-        const token = controller.getToken({userName:'tanimahossain'});
-        const mockReq = mockRequest({ headers: {
-            authorization: `Bearer ${token}`
-        } });
+        const token = controller.getToken({ userName: 'tanimahossain' });
+        const mockReq = mockRequest({
+            headers: {
+                authorization: `Bearer ${token}`,
+            },
+        });
         const mockRes = mockResponse();
         const mockNext = jest.fn();
         const payload = await controller.parseToken(mockReq, mockRes, mockNext);
         await Promise.resolve();
         expect(payload).toBeTruthy();
         expect(typeof payload).toBe('object');
-        expect(Object.keys(payload)).toStrictEqual([ 'userName', 'iat', 'exp' ]);
+        expect(Object.keys(payload)).toStrictEqual(['userName', 'iat', 'exp']);
     });
     test('invalid token parse', async () => {
         jest.clearAllMocks();
         const token = 'sdefawert';
-        const mockReq = mockRequest({ headers: {
-            authorization: `${token}`
-        } });
+        const mockReq = mockRequest({
+            headers: {
+                authorization: `${token}`,
+            },
+        });
         const mockRes = mockResponse();
         const mockNext = jest.fn();
         const payload = await controller.parseToken(mockReq, mockRes, mockNext);
@@ -86,9 +90,11 @@ describe('Token parsing', () => {
     test('empty username token parsing', async () => {
         jest.clearAllMocks();
         const token = 'sdefawert';
-        const mockReq = mockRequest({ headers: {
-            authorization: `Bearer ${token}`
-        } });
+        const mockReq = mockRequest({
+            headers: {
+                authorization: `Bearer ${token}`,
+            },
+        });
         const mockRes = mockResponse();
         const mockNext = jest.fn();
         const payload = await controller.parseToken(mockReq, mockRes, mockNext);
@@ -99,9 +105,11 @@ describe('Token parsing', () => {
     test('Valid token parse', async () => {
         jest.clearAllMocks();
         const token = controller.getToken({});
-        const mockReq = mockRequest({ headers: {
-            authorization: `Bearer ${token}`
-        } });
+        const mockReq = mockRequest({
+            headers: {
+                authorization: `Bearer ${token}`,
+            },
+        });
         const mockRes = mockResponse();
         const mockNext = jest.fn();
         const payload = await controller.parseToken(mockReq, mockRes, mockNext);
@@ -113,18 +121,20 @@ describe('Token parsing', () => {
 describe('Authorization', () => {
     test('Valid authorization', async () => {
         jest.restoreAllMocks();
-        const token = controller.getToken({userName:'tanimahossain'});
-        const mockReq = mockRequest({ headers: {
-            authorization: `Bearer ${token}`
-        } });
+        const token = controller.getToken({ userName: 'tanimahossain' });
+        const mockReq = mockRequest({
+            headers: {
+                authorization: `Bearer ${token}`,
+            },
+        });
         const mockRes = mockResponse();
         const mockNext = jest.fn();
         const payload = await controller.parseToken(mockReq, mockRes, mockNext);
-        jest.spyOn(User,'findOne').mockReturnValue({
+        jest.spyOn(User, 'findOne').mockReturnValue({
             userName: payload.userName,
             fullName: 'Tanima Hossain',
             eMail: 'tanima@gmail.com',
-            passChanged: payload.iat
+            passChanged: payload.iat,
         });
         await controller.authorize(mockReq, mockRes, mockNext);
         await Promise.resolve();
@@ -132,23 +142,27 @@ describe('Authorization', () => {
     });
     test('user not found authorization', async () => {
         jest.restoreAllMocks();
-        const token = controller.getToken({userName:'tanimahossain'});
-        const mockReq = mockRequest({ headers: {
-            authorization: `Bearer ${token}`
-        } });
+        const token = controller.getToken({ userName: 'tanimahossain' });
+        const mockReq = mockRequest({
+            headers: {
+                authorization: `Bearer ${token}`,
+            },
+        });
         const mockRes = mockResponse();
         const mockNext = jest.fn();
-        jest.spyOn(User,'findOne').mockReturnValue();
+        jest.spyOn(User, 'findOne').mockReturnValue();
         await controller.authorize(mockReq, mockRes, mockNext);
         await Promise.resolve();
         expect(controller.authorize).toBeTruthy();
     });
     test('payload username found authorization', async () => {
         jest.restoreAllMocks();
-        const token = controller.getToken({userName:null});
-        const mockReq = mockRequest({ headers: {
-            authorization: `Bearer ${token}`
-        } });
+        const token = controller.getToken({ userName: null });
+        const mockReq = mockRequest({
+            headers: {
+                authorization: `Bearer ${token}`,
+            },
+        });
         const mockRes = mockResponse();
         const mockNext = jest.fn();
         await controller.authorize(mockReq, mockRes, mockNext);
@@ -157,18 +171,20 @@ describe('Authorization', () => {
     });
     test('password over authorization', async () => {
         jest.restoreAllMocks();
-        const token = controller.getToken({userName:'tanimahossain'});
-        const mockReq = mockRequest({ headers: {
-            authorization: `Bearer ${token}`
-        } });
+        const token = controller.getToken({ userName: 'tanimahossain' });
+        const mockReq = mockRequest({
+            headers: {
+                authorization: `Bearer ${token}`,
+            },
+        });
         const mockRes = mockResponse();
         const mockNext = jest.fn();
         const payload = await controller.parseToken(mockReq, mockRes, mockNext);
-        jest.spyOn(User,'findOne').mockReturnValue({
+        jest.spyOn(User, 'findOne').mockReturnValue({
             userName: payload.userName,
             fullName: 'Tanima Hossain',
             eMail: 'tanima@gmail.com',
-            passChanged: 5+payload.iat
+            passChanged: 5 + payload.iat,
         });
         await controller.authorize(mockReq, mockRes, mockNext);
         await Promise.resolve();
@@ -178,19 +194,21 @@ describe('Authorization', () => {
 describe('Log In User', () => {
     test('logIn all okay', async () => {
         jest.restoreAllMocks();
-        const mockReq = mockRequest({body:{
-            userName: 'tanimahossain',
-            password: 'tanima12',
-        }});
+        const mockReq = mockRequest({
+            body: {
+                userName: 'tanimahossain',
+                password: 'tanima12',
+            },
+        });
         const mockRes = mockResponse();
         const mockNext = jest.fn();
-        jest.spyOn(controller,'getToken').mockReturnValue("this is a token");
-        jest.spyOn(User,'findOne').mockReturnValue({
+        jest.spyOn(controller, 'getToken').mockReturnValue('this is a token');
+        jest.spyOn(User, 'findOne').mockReturnValue({
             userName: 'tanimahossain',
             password: 'tanima12',
         });
-        jest.spyOn(hashString,'checkHash').mockImplementation( async(str1,str2) => {
-            return str1===str2;
+        jest.spyOn(hashString, 'checkHash').mockImplementation(async (str1, str2) => {
+            return str1 === str2;
         });
         await controller.logIn(mockReq, mockRes, mockNext);
         await Promise.resolve();
@@ -202,13 +220,13 @@ describe('Log In User', () => {
         const mockReq = mockRequest();
         const mockRes = mockResponse();
         const mockNext = jest.fn();
-        jest.spyOn(controller,'getToken').mockReturnValue("this is a token");
-        jest.spyOn(User,'findOne').mockReturnValue({
+        jest.spyOn(controller, 'getToken').mockReturnValue('this is a token');
+        jest.spyOn(User, 'findOne').mockReturnValue({
             userName: 'tanimahossain',
             password: 'tanima12',
         });
-        jest.spyOn(hashString,'checkHash').mockImplementation( async(str1,str2) => {
-            return str1===str2;
+        jest.spyOn(hashString, 'checkHash').mockImplementation(async (str1, str2) => {
+            return str1 === str2;
         });
         await controller.logIn(mockReq, mockRes, mockNext);
         await Promise.resolve();
@@ -217,16 +235,18 @@ describe('Log In User', () => {
     });
     test('logIn if2', async () => {
         jest.restoreAllMocks();
-        const mockReq = mockRequest({body: {
-            userName: 'tanimahossain',
-            password: 'tanima12',
-        }});
+        const mockReq = mockRequest({
+            body: {
+                userName: 'tanimahossain',
+                password: 'tanima12',
+            },
+        });
         const mockRes = mockResponse();
         const mockNext = jest.fn();
-        jest.spyOn(controller,'getToken').mockReturnValue("this is a token");
-        jest.spyOn(User,'findOne').mockReturnValue();
-        jest.spyOn(hashString,'checkHash').mockImplementation( async(str1,str2) => {
-            return str1===str2;
+        jest.spyOn(controller, 'getToken').mockReturnValue('this is a token');
+        jest.spyOn(User, 'findOne').mockReturnValue();
+        jest.spyOn(hashString, 'checkHash').mockImplementation(async (str1, str2) => {
+            return str1 === str2;
         });
         await controller.logIn(mockReq, mockRes, mockNext);
         await Promise.resolve();
@@ -235,19 +255,21 @@ describe('Log In User', () => {
     });
     test('logIn if3', async () => {
         jest.restoreAllMocks();
-        const mockReq = mockRequest({body: {
-            userName: 'tanimahossain',
-            password: 'tanima12',
-        }});
+        const mockReq = mockRequest({
+            body: {
+                userName: 'tanimahossain',
+                password: 'tanima12',
+            },
+        });
         const mockRes = mockResponse();
         const mockNext = jest.fn();
-        jest.spyOn(controller,'getToken').mockReturnValue("this is a token");
-        jest.spyOn(User,'findOne').mockReturnValue({
+        jest.spyOn(controller, 'getToken').mockReturnValue('this is a token');
+        jest.spyOn(User, 'findOne').mockReturnValue({
             userName: 'tanimahossain',
             password: 'tanima13',
         });
-        jest.spyOn(hashString,'checkHash').mockImplementation( async(str1,str2) => {
-            return str1===str2;
+        jest.spyOn(hashString, 'checkHash').mockImplementation(async (str1, str2) => {
+            return str1 === str2;
         });
         await controller.logIn(mockReq, mockRes, mockNext);
         await Promise.resolve();

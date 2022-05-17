@@ -13,9 +13,9 @@ exports.getUser = async (req, res, next) => {
             userName: req.params.id.trim(),
         },
     });
-    if(Data !== null && !Data){
+    if (Data !== null && !Data) {
         return next(new AppError(`Something went wrong`, 500));
-    } else{
+    } else {
         Data = {
             status: 'success',
             message: 'User data fetched sucessfully',
@@ -28,8 +28,7 @@ exports.getUser = async (req, res, next) => {
             status: 'failed',
             message: 'No such user',
         };
-    } else
-        req.status = 200;
+    } else req.status = 200;
     return Data;
 };
 
@@ -63,7 +62,7 @@ exports.updateUser = async (req, res, next) => {
         userInfo.passChanged = Math.floor(Date.now() / 1000);
         token = authController.getToken({ userName: req.payload.userName });
         userInfo.passChangedFlag = true;
-    } else{
+    } else {
         userInfo.passChangedFlag = false;
     }
     await User.update(userInfo, {
@@ -111,9 +110,11 @@ exports.deleteUser = async (req, res, next) => {
 exports.getAllUsers = async (req, res, next) => {
     let Data;
     Data = await User.findAll({
-        attributes: { exclude: ['password', 'createdAt', 'updatedAt', 'passChanged', 'passChangedFlag'] },
+        attributes: {
+            exclude: ['password', 'createdAt', 'updatedAt', 'passChanged', 'passChangedFlag'],
+        },
     });
-    if(!Data){
+    if (!Data) {
         req.status = 500;
         return next(new AppError("Can't serve the data you wanted", 500));
     } else {
@@ -126,8 +127,7 @@ exports.getAllUsers = async (req, res, next) => {
     }
     if (Data.count === 0) {
         req.status = 200;
-        Data.message ='There are no user';
-    } else
-        req.status = 200;
+        Data.message = 'There are no user';
+    } else req.status = 200;
     return Data;
 };

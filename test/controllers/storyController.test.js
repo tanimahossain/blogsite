@@ -8,7 +8,7 @@ const mockCreateStories = [
         authorName: 'el.duivel',
         storyTitle: 'First Story',
         storyDescription: 'This is my first story.',
-    }
+    },
 ];
 const mockCreateStoryRespose = {
     status: 'success',
@@ -16,64 +16,71 @@ const mockCreateStoryRespose = {
     storyId: 'tanimahossain_1',
     authorName: 'el.duivel',
     storyTitle: 'First Story',
-    openingLines: 'This is my first story....'
-  }
+    openingLines: 'This is my first story....',
+};
 const mockStoriesResponse = [
     {
-        "storyId": "tanimahossain_1",
-        "authorName": "el.duivel",
-        "storyTitle": "tanima",
-        "openingLines": "tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...",
-        "createdAt": "2022-05-09T08:24:26.000Z",
-        "updatedAt": "2022-05-09T08:24:26.000Z",
-        "authorUsername": "tanimahossain"
+        storyId: 'tanimahossain_1',
+        authorName: 'el.duivel',
+        storyTitle: 'tanima',
+        openingLines:
+            'tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...',
+        createdAt: '2022-05-09T08:24:26.000Z',
+        updatedAt: '2022-05-09T08:24:26.000Z',
+        authorUsername: 'tanimahossain',
     },
     {
-        "storyId": "tanimahossain_2",
-        "authorName": "el.duivel",
-        "storyTitle": "tanima",
-        "openingLines": "tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...",
-        "createdAt": "2022-05-09T08:24:27.000Z",
-        "updatedAt": "2022-05-09T08:24:27.000Z",
-        "authorUsername": "tanimahossain"
+        storyId: 'tanimahossain_2',
+        authorName: 'el.duivel',
+        storyTitle: 'tanima',
+        openingLines:
+            'tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...',
+        createdAt: '2022-05-09T08:24:27.000Z',
+        updatedAt: '2022-05-09T08:24:27.000Z',
+        authorUsername: 'tanimahossain',
     },
     {
-        "storyId": "tanimahossain_3",
-        "authorName": "el.duivel",
-        "storyTitle": "tanima",
-        "openingLines": "tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...",
-        "createdAt": "2022-05-09T08:24:28.000Z",
-        "updatedAt": "2022-05-09T08:24:28.000Z",
-        "authorUsername": "tanimahossain"
+        storyId: 'tanimahossain_3',
+        authorName: 'el.duivel',
+        storyTitle: 'tanima',
+        openingLines:
+            'tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...',
+        createdAt: '2022-05-09T08:24:28.000Z',
+        updatedAt: '2022-05-09T08:24:28.000Z',
+        authorUsername: 'tanimahossain',
     },
     {
-        "storyId": "tanimahossain_4",
-        "authorName": "el.duivel",
-        "storyTitle": "tanima",
-        "openingLines": "tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...",
-        "createdAt": "2022-05-09T08:24:29.000Z",
-        "updatedAt": "2022-05-09T08:24:29.000Z",
-        "authorUsername": "tanimahossain"
+        storyId: 'tanimahossain_4',
+        authorName: 'el.duivel',
+        storyTitle: 'tanima',
+        openingLines:
+            'tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...',
+        createdAt: '2022-05-09T08:24:29.000Z',
+        updatedAt: '2022-05-09T08:24:29.000Z',
+        authorUsername: 'tanimahossain',
     },
     {
-        "storyId": "tanimahossain_5",
-        "authorName": "el.duivel",
-        "storyTitle": "tanima",
-        "openingLines": "tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...",
-        "createdAt": "2022-05-09T08:24:29.000Z",
-        "updatedAt": "2022-05-09T08:24:29.000Z",
-        "authorUsername": "tanimahossain"
-    }
+        storyId: 'tanimahossain_5',
+        authorName: 'el.duivel',
+        storyTitle: 'tanima',
+        openingLines:
+            'tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...',
+        createdAt: '2022-05-09T08:24:29.000Z',
+        updatedAt: '2022-05-09T08:24:29.000Z',
+        authorUsername: 'tanimahossain',
+    },
 ];
 const mockStoryResponse = {
-    "storyId": "tanimahossain_2",
-    "authorName": "el.duivel",
-    "storyTitle": "tanima",
-    "openingLines": "tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...",
-    "storyDescription": "tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnpuorytqciiryvtqpoiccytunqpcvotu ovtupwyttuiymeoiurytnrt",
-    "createdAt": "2022-05-09T09:02:16.000Z",
-    "updatedAt": "2022-05-09T09:02:16.000Z",
-    "authorUsername": "tanimahossain"
+    storyId: 'tanimahossain_2',
+    authorName: 'el.duivel',
+    storyTitle: 'tanima',
+    openingLines:
+        'tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...',
+    storyDescription:
+        'tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnpuorytqciiryvtqpoiccytunqpcvotu ovtupwyttuiymeoiurytnrt',
+    createdAt: '2022-05-09T09:02:16.000Z',
+    updatedAt: '2022-05-09T09:02:16.000Z',
+    authorUsername: 'tanimahossain',
 };
 const mockUpdateStories = {
     authorName: ' el.duivel ',
@@ -83,11 +90,11 @@ const mockUpdateStories = {
 };
 describe('Story Create', () => {
     test('create all okay', async () => {
-        jest.clearAllMocks()
+        jest.clearAllMocks();
         const mockReq = mockRequest({ body: mockCreateStories[0] });
         const mockRes = mockResponse();
         const mockNext = jest.fn();
-        mockReq.payload='username';
+        mockReq.payload = 'username';
         mockReq.payload.userName = 'tanimahossain';
         mockReq.status = 201;
         jest.spyOn(storyServices, 'postStory').mockReturnValue(mockCreateStoryRespose);
@@ -96,18 +103,23 @@ describe('Story Create', () => {
         await Promise.resolve();
         expect(mockReq.status).toBe(201);
         expect(storyServices.postStory).toHaveBeenCalledWith(mockReq, mockRes, mockNext);
-        expect(negotiate.negotiateData).toHaveBeenCalledWith(mockCreateStoryRespose, mockReq, mockRes, mockNext);
+        expect(negotiate.negotiateData).toHaveBeenCalledWith(
+            mockCreateStoryRespose,
+            mockReq,
+            mockRes,
+            mockNext
+        );
         expect(storyServices.postStory).toHaveBeenCalledTimes(1);
         expect(negotiate.negotiateData).toHaveBeenCalledTimes(1);
     });
 });
 describe('Story Update', () => {
     test('Update all okay', async () => {
-        jest.clearAllMocks()
+        jest.clearAllMocks();
         const mockReq = mockRequest({ body: mockUpdateStories });
         const mockRes = mockResponse();
         const mockNext = jest.fn();
-        mockReq.payload='username';
+        mockReq.payload = 'username';
         mockReq.payload.userName = 'tanimahossain';
         mockReq.status = 200;
         jest.spyOn(storyServices, 'updateStory').mockReturnValue({
@@ -122,21 +134,26 @@ describe('Story Update', () => {
         await Promise.resolve();
         expect(mockReq.status).toBe(200);
         expect(storyServices.updateStory).toHaveBeenCalledWith(mockReq, mockRes, mockNext);
-        expect(negotiate.negotiateData).toHaveBeenCalledWith({
-            status: 'success',
-            message: 'Story updated Successfully',
-        }, mockReq, mockRes, mockNext);
+        expect(negotiate.negotiateData).toHaveBeenCalledWith(
+            {
+                status: 'success',
+                message: 'Story updated Successfully',
+            },
+            mockReq,
+            mockRes,
+            mockNext
+        );
         expect(storyServices.updateStory).toHaveBeenCalledTimes(1);
         expect(negotiate.negotiateData).toHaveBeenCalledTimes(1);
     });
 });
 describe('Story Delete', () => {
     test('Delete all okay', async () => {
-        jest.clearAllMocks()
+        jest.clearAllMocks();
         const mockReq = mockRequest({ body: mockCreateStories[0] });
         const mockRes = mockResponse();
         const mockNext = jest.fn();
-        mockReq.payload='username';
+        mockReq.payload = 'username';
         mockReq.payload.userName = 'tanimahossain';
         mockReq.status = 200;
         mockReq.params.id = 'tanimahossain';
@@ -154,17 +171,22 @@ describe('Story Delete', () => {
         await Promise.resolve();
         expect(mockReq.status).toBe(200);
         expect(storyServices.deleteStory).toHaveBeenCalledWith(mockReq, mockRes, mockNext);
-        expect(negotiate.negotiateData).toHaveBeenCalledWith({
-            status: 'success',
-            message: 'Story deleted Successfully',
-        }, mockReq, mockRes, mockNext);
+        expect(negotiate.negotiateData).toHaveBeenCalledWith(
+            {
+                status: 'success',
+                message: 'Story deleted Successfully',
+            },
+            mockReq,
+            mockRes,
+            mockNext
+        );
         expect(storyServices.deleteStory).toHaveBeenCalledTimes(1);
         expect(negotiate.negotiateData).toHaveBeenCalledTimes(1);
     });
 });
 describe('Story View', () => {
     test('view a story all okay', async () => {
-        jest.clearAllMocks()
+        jest.clearAllMocks();
         const mockReq = mockRequest();
         const mockRes = mockResponse();
         const mockNext = jest.fn();
@@ -186,18 +208,23 @@ describe('Story View', () => {
         await Promise.resolve();
         expect(mockReq.status).toBe(200);
         expect(storyServices.getStory).toHaveBeenCalledWith(mockReq, mockRes, mockNext);
-        expect(negotiate.negotiateData).toHaveBeenCalledWith({
-            status: 'success',
-            message: 'User data fetched sucessfully',
-            storyData: mockStoryResponse,
-        }, mockReq, mockRes, mockNext);
+        expect(negotiate.negotiateData).toHaveBeenCalledWith(
+            {
+                status: 'success',
+                message: 'User data fetched sucessfully',
+                storyData: mockStoryResponse,
+            },
+            mockReq,
+            mockRes,
+            mockNext
+        );
         expect(storyServices.getStory).toHaveBeenCalledTimes(1);
         expect(negotiate.negotiateData).toHaveBeenCalledTimes(1);
     });
 });
 describe('Story View', () => {
     test('view all stories all okay', async () => {
-        jest.clearAllMocks()
+        jest.clearAllMocks();
         const mockReq = mockRequest();
         const mockRes = mockResponse();
         const mockNext = jest.fn();
@@ -221,12 +248,17 @@ describe('Story View', () => {
         await Promise.resolve();
         expect(mockReq.status).toBe(200);
         expect(storyServices.getAllStories).toHaveBeenCalledWith(mockReq, mockRes, mockNext);
-        expect(negotiate.negotiateData).toHaveBeenCalledWith({
-            status: 'success',
-            message: 'Stories fetched Successfully',
-            count: 5,
-            storyData: mockStoriesResponse,
-        }, mockReq, mockRes, mockNext);
+        expect(negotiate.negotiateData).toHaveBeenCalledWith(
+            {
+                status: 'success',
+                message: 'Stories fetched Successfully',
+                count: 5,
+                storyData: mockStoriesResponse,
+            },
+            mockReq,
+            mockRes,
+            mockNext
+        );
         expect(storyServices.getAllStories).toHaveBeenCalledTimes(1);
         expect(negotiate.negotiateData).toHaveBeenCalledTimes(1);
     });

@@ -7,9 +7,9 @@ module.exports = (err, req, res, next) => {
     if (err.message.startsWith('Validation error')) {
         statusCode = 400;
         status = 'failed';
-    } else if(err.statusCode){
-        statusCode = err.statusCode
-    } else{
+    } else if (err.statusCode) {
+        statusCode = err.statusCode;
+    } else {
         statusCode = 500;
     }
     res.status(statusCode).send({

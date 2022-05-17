@@ -9,8 +9,8 @@ exports.getStory = async (req, res, next) => {
         where: {
             storyId: req.params.id.trim(),
         },
-    })
-    if(Data !== null && !Data){
+    });
+    if (Data !== null && !Data) {
         return next(new AppError(`Something went wrong`, 500));
     }
     req.status = 200;
@@ -65,7 +65,7 @@ exports.updateStory = async (req, res, next) => {
     const storyInfo = req.body;
     if (req.body.storyDescription) {
         storyInfo.openingLines = `${req.body.storyDescription.slice(0, 100)}...`;
-    } else{
+    } else {
         storyInfo.openingLines = req.body.storyDescription;
     }
     if (storyInfo.authorName) storyInfo.authorName = storyInfo.authorName.trim();
@@ -113,8 +113,7 @@ exports.getAllStories = async (req, res, next) => {
     Data = await Story.findAll({
         attributes: { exclude: ['storyDescription', 'storyNo'] },
     });
-    if(!Data)
-        return next(new AppError("Can't serve the data you wanted", 500));
+    if (!Data) return next(new AppError("Can't serve the data you wanted", 500));
     Data = {
         status: 'success',
         message: 'Stories fetched Successfully',
@@ -122,7 +121,7 @@ exports.getAllStories = async (req, res, next) => {
         storyData: Data,
     };
     if (Data.count === 0) {
-        Data.message ='No Stories to fetch';
+        Data.message = 'No Stories to fetch';
     }
     req.status = 200;
     return Data;

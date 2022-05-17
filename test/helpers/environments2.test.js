@@ -1,4 +1,3 @@
-
 test('environments default set up', () => {
     const environments = require('../../helpers/environments');
     expect(environments.port).toBe(3000);

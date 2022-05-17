@@ -12,7 +12,7 @@ exports.negotiateData = async (Data, req, res, next) => {
     let statusCode = 200;
     if (req.status) {
         statusCode = req.status;
-    } else{
+    } else {
         req.status = 200;
     }
     if (!Data.status) data.status = 'success';
@@ -33,6 +33,7 @@ exports.negotiateData = async (Data, req, res, next) => {
         return res.header('Content-Type', 'text/html').status(statusCode).send(data);
     }
 
-    statusCode = 406; req.status= 406;
+    statusCode = 406;
+    req.status = 406;
     return next(new AppError("Can't serve the data you wanted", statusCode));
 };

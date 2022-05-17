@@ -27,22 +27,20 @@ exports.parseToken = async (req, res, next) => {
     }
     /// Verification of Token
     let payload;
-    try{
+    try {
         payload = await promisify(jwt.verify)(token, environments.jwtSecretKey);
-    } catch(err){
-        return next(new AppError('Could not verify your token',401));
+    } catch (err) {
+        return next(new AppError('Could not verify your token', 401));
     }
-    if(!payload.userName)
-        return next(new AppError('Could not verify your token',401));
-    else
-        return payload;
+    if (!payload.userName) return next(new AppError('Could not verify your token', 401));
+    else return payload;
 };
 
 exports.authorize = catchAsync(async (req, res, next) => {
     const payload = await this.parseToken(req, res, next);
     if (!payload || !payload.userName) {
         return next(new AppError('Please log in First', 401));
-    } else{
+    } else {
         req.payload = payload;
     }
 
@@ -56,11 +54,11 @@ exports.authorize = catchAsync(async (req, res, next) => {
 
     if (!userStillExists) {
         return next(new AppError('User not found!', 404));
-    } else{
+    } else {
         /// If password changed after issuing this token
         if (userStillExists.passChanged > payload.iat) {
             return next(new AppError('Please log in again', 401));
-        } else{
+        } else {
             return next();
         }
     }
@@ -73,7 +71,7 @@ exports.logIn = catchAsync(async (req, res, next) => {
     if (!req.body.userName || !req.body.password) {
         req.status = 400;
         return next(new AppError('Please provide username password correctly', 400));
-    } else{
+    } else {
         userInfo = req.body;
     }
 
@@ -94,8 +92,7 @@ exports.logIn = catchAsync(async (req, res, next) => {
         if (!flag) {
             req.status = 401;
             return next(new AppError('Username or password wrong', 401));
-        } else
-            req.status = 200;
+        } else req.status = 200;
         const token = this.getToken({ userName: userInfo.userName });
         Data = {
             status: 'success',

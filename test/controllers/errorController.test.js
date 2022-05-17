@@ -1,19 +1,19 @@
 const err = require('../../controllers/errorController');
 const { mockRequest, mockResponse } = require('jest-mock-req-res');
 const error1 = {
-    message: "Validation error sfeaswer",
-    status: "failed"
+    message: 'Validation error sfeaswer',
+    status: 'failed',
 };
 const error2 = {
     statusCode: 404,
-    message:'',
+    message: '',
 };
 const error3 = {
-    message: "ftjdyr error sfeaswer",
+    message: 'ftjdyr error sfeaswer',
 };
 describe('error Controller', () => {
     test('if1', async () => {
-        jest.clearAllMocks()
+        jest.clearAllMocks();
         const mockReq = mockRequest();
         const mockRes = mockResponse();
         const mockNext = jest.fn();
@@ -21,7 +21,7 @@ describe('error Controller', () => {
         expect(mockNext).toHaveBeenCalledTimes(1);
     });
     test('if2', async () => {
-        jest.clearAllMocks()
+        jest.clearAllMocks();
         const mockReq = mockRequest();
         const mockRes = mockResponse();
         const mockNext = jest.fn();
@@ -29,7 +29,7 @@ describe('error Controller', () => {
         expect(mockNext).toHaveBeenCalledTimes(1);
     });
     test('if3', async () => {
-        jest.clearAllMocks()
+        jest.clearAllMocks();
         const mockReq = mockRequest();
         const mockRes = mockResponse();
         const mockNext = jest.fn();

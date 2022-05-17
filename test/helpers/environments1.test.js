@@ -1,4 +1,3 @@
-
 test('environments default set up', () => {
     process.env.NODE_ENV = 'production';
     const environments = require('../../helpers/environments');

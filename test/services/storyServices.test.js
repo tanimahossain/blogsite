@@ -24,74 +24,80 @@ const mockCreateStories = [
 ];
 const mockStoriesResponse = [
     {
-        "storyId": "tanimahossain_1",
-        "authorName": "el.duivel",
-        "storyTitle": "tanima",
-        "openingLines": "tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...",
-        "createdAt": "2022-05-09T08:24:26.000Z",
-        "updatedAt": "2022-05-09T08:24:26.000Z",
-        "authorUsername": "tanimahossain"
+        storyId: 'tanimahossain_1',
+        authorName: 'el.duivel',
+        storyTitle: 'tanima',
+        openingLines:
+            'tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...',
+        createdAt: '2022-05-09T08:24:26.000Z',
+        updatedAt: '2022-05-09T08:24:26.000Z',
+        authorUsername: 'tanimahossain',
     },
     {
-        "storyId": "tanimahossain_2",
-        "authorName": "el.duivel",
-        "storyTitle": "tanima",
-        "openingLines": "tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...",
-        "createdAt": "2022-05-09T08:24:27.000Z",
-        "updatedAt": "2022-05-09T08:24:27.000Z",
-        "authorUsername": "tanimahossain"
+        storyId: 'tanimahossain_2',
+        authorName: 'el.duivel',
+        storyTitle: 'tanima',
+        openingLines:
+            'tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...',
+        createdAt: '2022-05-09T08:24:27.000Z',
+        updatedAt: '2022-05-09T08:24:27.000Z',
+        authorUsername: 'tanimahossain',
     },
     {
-        "storyId": "tanimahossain_3",
-        "authorName": "el.duivel",
-        "storyTitle": "tanima",
-        "openingLines": "tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...",
-        "createdAt": "2022-05-09T08:24:28.000Z",
-        "updatedAt": "2022-05-09T08:24:28.000Z",
-        "authorUsername": "tanimahossain"
+        storyId: 'tanimahossain_3',
+        authorName: 'el.duivel',
+        storyTitle: 'tanima',
+        openingLines:
+            'tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...',
+        createdAt: '2022-05-09T08:24:28.000Z',
+        updatedAt: '2022-05-09T08:24:28.000Z',
+        authorUsername: 'tanimahossain',
     },
     {
-        "storyId": "tanimahossain_4",
-        "authorName": "el.duivel",
-        "storyTitle": "tanima",
-        "openingLines": "tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...",
-        "createdAt": "2022-05-09T08:24:29.000Z",
-        "updatedAt": "2022-05-09T08:24:29.000Z",
-        "authorUsername": "tanimahossain"
+        storyId: 'tanimahossain_4',
+        authorName: 'el.duivel',
+        storyTitle: 'tanima',
+        openingLines:
+            'tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...',
+        createdAt: '2022-05-09T08:24:29.000Z',
+        updatedAt: '2022-05-09T08:24:29.000Z',
+        authorUsername: 'tanimahossain',
     },
     {
-        "storyId": "tanimahossain_5",
-        "authorName": "el.duivel",
-        "storyTitle": "tanima",
-        "openingLines": "tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...",
-        "createdAt": "2022-05-09T08:24:29.000Z",
-        "updatedAt": "2022-05-09T08:24:29.000Z",
-        "authorUsername": "tanimahossain"
-    }
+        storyId: 'tanimahossain_5',
+        authorName: 'el.duivel',
+        storyTitle: 'tanima',
+        openingLines:
+            'tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...',
+        createdAt: '2022-05-09T08:24:29.000Z',
+        updatedAt: '2022-05-09T08:24:29.000Z',
+        authorUsername: 'tanimahossain',
+    },
 ];
 const mocketStoryResponse = {
-    "storyId": "tanimahossain_2",
-    "authorName": "el.duivel",
-    "storyTitle": "tanima",
-    "openingLines": "tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...",
-    "storyDescription": "tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnpuorytqciiryvtqpoiccytunqpcvotu ovtupwyttuiymeoiurytnrt",
-    "createdAt": "2022-05-09T09:02:16.000Z",
-    "updatedAt": "2022-05-09T09:02:16.000Z",
-    "authorUsername": "tanimahossain"
+    storyId: 'tanimahossain_2',
+    authorName: 'el.duivel',
+    storyTitle: 'tanima',
+    openingLines:
+        'tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnp...',
+    storyDescription:
+        'tanima wkjegriauwcyeoviuytiutynvoir ruqtoiuwytcvquiwe weoyurcvopuryt[pqweoicoirgytpuvnryqcp cvqopwnpuorytqciiryvtqpoiccytunqpcvotu ovtupwyttuiymeoiurytnrt',
+    createdAt: '2022-05-09T09:02:16.000Z',
+    updatedAt: '2022-05-09T09:02:16.000Z',
+    authorUsername: 'tanimahossain',
 };
 const mockUpdateStories = [
     {
-        storyDescription:
-            'This is my first story for testing the story services.',
+        storyDescription: 'This is my first story for testing the story services.',
     },
     {
         authorName: ' el.duivel ',
         storyTitle: ' second Story ',
-    }
+    },
 ];
 describe('Story Create', () => {
     test('create all okay', async () => {
-        jest.clearAllMocks()
+        jest.clearAllMocks();
         const mockReq = mockRequest({ body: mockCreateStories[0] });
         const mockRes = mockResponse();
         const mockNext = jest.fn();
@@ -119,7 +125,7 @@ describe('Story Create', () => {
     });
 
     test('create mx value error', async () => {
-        jest.clearAllMocks()
+        jest.clearAllMocks();
         const mockReq = mockRequest({ body: mockCreateStories[0] });
         const mockRes = mockResponse();
         const mockNext = jest.fn();
@@ -154,7 +160,7 @@ describe('View A Story', () => {
         const mockReq = mockRequest();
         const mockRes = mockResponse();
         const mockNext = jest.fn();
-        mockReq.params.id = 'tanimahossain_1'
+        mockReq.params.id = 'tanimahossain_1';
         jest.spyOn(Story, 'findOne').mockReturnValue(mocketStoryResponse);
         const Data = await services.getStory(mockReq, mockRes, mockNext);
         expect(Story.findOne).toHaveBeenCalledWith({
@@ -173,7 +179,7 @@ describe('View A Story', () => {
         const mockReq = mockRequest();
         const mockRes = mockResponse();
         const mockNext = jest.fn();
-        mockReq.params.id = 'tanimahossain_1'
+        mockReq.params.id = 'tanimahossain_1';
         jest.spyOn(Story, 'findOne').mockReturnValue(null);
         const Data = await services.getStory(mockReq, mockRes, mockNext);
         expect(Story.findOne).toHaveBeenCalledWith({
@@ -192,7 +198,7 @@ describe('View A Story', () => {
         const mockReq = mockRequest();
         const mockRes = mockResponse();
         const mockNext = jest.fn();
-        mockReq.params.id = 'tanimahossain_1'
+        mockReq.params.id = 'tanimahossain_1';
         jest.spyOn(Story, 'findOne').mockReturnValue();
         const Data = await services.getStory(mockReq, mockRes, mockNext);
         expect(Story.findOne).toHaveBeenCalledWith({
@@ -258,7 +264,7 @@ describe('View all Stories', () => {
     });
 });
 
-describe("Delete Story", () => {
+describe('Delete Story', () => {
     test('Delete', async () => {
         jest.clearAllMocks();
         const mockReq = mockRequest();
@@ -279,7 +285,7 @@ describe("Delete Story", () => {
         expect(Data.message).toBe('Story deleted Successfully');
     });
 });
-describe("Update Story",() => {
+describe('Update Story', () => {
     test('update with no ifs', async () => {
         jest.clearAllMocks();
         const mockReq = mockRequest();
@@ -291,12 +297,12 @@ describe("Update Story",() => {
         const storyInfo = mockUpdateStories[0];
         if (mockUpdateStories[1].storyDescription) {
             storyInfo.openingLines = `${mockUpdateStories[1].storyDescription.slice(0, 100)}...`;
-        } else{
+        } else {
             storyInfo.openingLines = mockUpdateStories[1].storyDescription;
         }
         if (storyInfo.authorName) storyInfo.authorName = storyInfo.authorName.trim();
         if (storyInfo.storyTitle) storyInfo.storyTitle = storyInfo.storyTitle.trim();
-        
+
         jest.spyOn(Story, 'update').mockImplementation((val) => {
             return;
         });
@@ -321,12 +327,12 @@ describe("Update Story",() => {
         const storyInfo = mockUpdateStories[1];
         if (mockUpdateStories[1].storyDescription) {
             storyInfo.openingLines = `${mockUpdateStories[1].storyDescription.slice(0, 100)}...`;
-        } else{
+        } else {
             storyInfo.openingLines = mockUpdateStories[1].storyDescription;
         }
         if (storyInfo.authorName) storyInfo.authorName = storyInfo.authorName.trim();
         if (storyInfo.storyTitle) storyInfo.storyTitle = storyInfo.storyTitle.trim();
-        
+
         jest.spyOn(Story, 'update').mockImplementation((val) => {
             return;
         });

@@ -107,11 +107,11 @@ const User = dbConfig.sequelize.define(
             //
         },
         sequelize,
-    },
+    }
 );
 
 User.addHook('afterValidate', async (req) => {
-    if(req.passChangedFlag===true){
+    if (req.passChangedFlag === true) {
         const hash = await hashString.makeHash(req.password);
         req.password = hash;
         req.passChangedFlag = false;

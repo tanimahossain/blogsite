@@ -25,12 +25,12 @@ exports.postStory = catchAsync(async (req, res, next) => {
     await negotiate.negotiateData(Data, req, res, next);
 });
 
-exports.updateStory = catchAsync(async(req, res, next) => {
+exports.updateStory = catchAsync(async (req, res, next) => {
     const Data = await storyServices.updateStory(req, res, next);
     await negotiate.negotiateData(Data, req, res, next);
 });
 
-exports.deleteStory = catchAsync(async(req, res, next) => {
+exports.deleteStory = catchAsync(async (req, res, next) => {
     const Data = await storyServices.deleteStory(req, res, next);
     await negotiate.negotiateData(Data, req, res, next);
 });
