@@ -40,7 +40,7 @@ exports.postStory = async (req, res, next) => {
     }
     mx += 1;
     const storyInfo = {
-        storyId: `${req.payload.userName}_${mx}`,
+        storyId: `${req.payload.userName}-${mx}`,
         storyNo: mx,
         authorUsername: req.payload.userName,
         authorName: req.body.authorName.trim(),

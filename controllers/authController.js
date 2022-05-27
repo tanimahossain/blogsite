@@ -23,7 +23,8 @@ exports.parseToken = async (req, res, next) => {
         const { 1: arr } = req.headers.authorization.split(' ');
         token = arr;
     } else {
-        return next(new AppError('Please log in First', 401));
+        console.log('came here');
+        return next(new AppError('Please log in First no token', 401));
     }
     /// Verification of Token
     let payload;
@@ -37,7 +38,11 @@ exports.parseToken = async (req, res, next) => {
 };
 
 exports.authorize = catchAsync(async (req, res, next) => {
+    //console.log(req.headers);
+    //console.log(req.headers['authorization']);
+    //console.log(req.headers['Authorization']);
     const payload = await this.parseToken(req, res, next);
+    //console.log(req.headers, payload);
     if (!payload || !payload.userName) {
         return next(new AppError('Please log in First', 401));
     } else {
