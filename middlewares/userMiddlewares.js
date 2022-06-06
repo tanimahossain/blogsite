@@ -1,4 +1,6 @@
 const AppError = require('./appError');
+const User = require('../models/usersModel');
+const catchAsync = require('../utilities/catchAsync');
 
 exports.updatable = (req, res, next) => {
     if (req.body.userName) {
@@ -17,7 +19,7 @@ exports.updatable = (req, res, next) => {
     return next();
 };
 
-exports.creatable = (req, res, next) => {
+exports.creatable = catchAsync(async (req, res, next) => {
     let cnt = 0;
     if (req.body.userName) cnt += 1;
     if (req.body.fullName) cnt += 1;
@@ -30,5 +32,26 @@ exports.creatable = (req, res, next) => {
     if (cnt !== givenValues) {
         return next(new AppError('You have given invalid data for creating an account', 400));
     }
+    /// User Exists
+    let userStillExists = await User.findOne({
+        attributes: { exclude: ['password', 'createdAt', 'updatedAt', 'passChangedFlag'] },
+        where: {
+            userName: req.body.userName,
+        },
+    });
+
+    if (userStillExists) {
+        return next(new AppError('Username Already Exists!', 400));
+    }
+    userStillExists = await User.findOne({
+        attributes: { exclude: ['password', 'createdAt', 'updatedAt', 'passChangedFlag'] },
+        where: {
+            eMail: req.body.eMail,
+        },
+    });
+
+    if (userStillExists) {
+        return next(new AppError('Someone used this email already!', 400));
+    }
     return next();
-};
+});

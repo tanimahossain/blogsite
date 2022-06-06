@@ -77,7 +77,7 @@ const User = dbConfig.sequelize.define(
             validate: {
                 is: {
                     args: /^[0-9a-zA-Z~`!@#$%^&*.()-_+={}[\]|\\/:;"'<>,?]+$/g,
-                    msg: 'Only use latin letters or digits',
+                    msg: 'Only use latin letters or digits and special characters such as ~`!@#$%^&*.()-_+={}[]|\\/:;"\'<>,?',
                 },
                 notNull: {
                     arg: true,

@@ -20,11 +20,7 @@ exports.getStory = async (req, res, next) => {
         storyData: Data,
     };
     if (!Data.storyData) {
-        req.status = 404;
-        Data = {
-            status: 'failed',
-            message: 'No such story',
-        };
+        return next(new AppError(`No such Story`, 404));
     }
     req.status = 200;
     return Data;

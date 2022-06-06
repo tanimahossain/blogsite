@@ -8,7 +8,9 @@ const AppError = require('../middlewares/appError');
 exports.getUser = async (req, res, next) => {
     let Data;
     Data = await User.findOne({
-        attributes: { exclude: ['password', 'createdAt', 'updatedAt', 'passChanged'] },
+        attributes: {
+            exclude: ['password', 'createdAt', 'updatedAt', 'passChanged', 'passChangedFlag'],
+        },
         where: {
             userName: req.params.id.trim(),
         },

@@ -62,7 +62,7 @@ exports.creatable = catchAsync(async (req, res, next) => {
     if (req.body.authorName) cnt += 1;
     const givenValues = Object.keys(req.body).length;
     if (cnt < 3) {
-        return next(new AppError('You are missing necessary data for creating a post', 400));
+        return next(new AppError('Please fill up all the fields for creating a post', 400));
     }
     if (cnt !== givenValues) {
         return next(new AppError('You have given invalid data for creating a post', 400));
