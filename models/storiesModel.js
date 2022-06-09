@@ -57,7 +57,7 @@ const Story = dbConfig.sequelize.define('story', {
             },
             len: {
                 args: [1, 10000],
-                msg: "Release your post into episodes it's large for a single one",
+                msg: "Release your post into episodes it's large for a single one. A post can only take 10,000 letters",
             },
         },
     },

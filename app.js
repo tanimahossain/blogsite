@@ -2,7 +2,7 @@
 const express = require('express');
 
 const app = express();
-//const morgan = require('morgan');
+const morgan = require('morgan');
 const userRoutes = require('./routes/userRoutes');
 const storyRoutes = require('./routes/storyRoutes');
 const db = require('./database/dbConnect');
@@ -19,7 +19,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 /////
 /// *** unnecessary for production only use in dev testing *** ///
-//app.use(morgan('dev'));
+app.use(morgan('dev'));
 /// *** unnecessary for production only use in dev testing *** ///
 
 app.use(express.json());
