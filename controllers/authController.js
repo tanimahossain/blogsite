@@ -108,3 +108,17 @@ exports.logIn = catchAsync(async (req, res, next) => {
     }
     return await negotiate.negotiateData(Data, req, res, next);
 });
+
+exports.verify = catchAsync(async (req, res, next) => {
+    /// Existence of Token
+    const { 1: arr } = req.headers.authorization.split(' ');
+    const token = arr;
+    const Data = {
+        status: 'success',
+        message: 'Valid User',
+        userName: req.payload.userName,
+        token,
+    };
+    req.status = 200;
+    return await negotiate.negotiateData(Data, req, res, next);
+});
