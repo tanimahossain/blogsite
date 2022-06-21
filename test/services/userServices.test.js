@@ -59,7 +59,7 @@ describe('View A User', () => {
         const Data = await services.getUser(mockReq, mockRes, mockNext);
         expect(User.findOne).toHaveBeenCalledWith({
             attributes: {
-                exclude: ['password', 'createdAt', 'updatedAt', 'passChanged', 'passChagedFlag'],
+                exclude: ['password', 'createdAt', 'updatedAt', 'passChanged', 'passChangedFlag'],
             },
             where: {
                 userName: mockReq.params.id.trim(),
@@ -83,7 +83,9 @@ describe('View A User', () => {
         jest.spyOn(User, 'findOne').mockReturnValue();
         const Data = await services.getUser(mockReq, mockRes, mockNext);
         expect(User.findOne).toHaveBeenCalledWith({
-            attributes: { exclude: ['password', 'createdAt', 'updatedAt', 'passChanged'] },
+            attributes: {
+                exclude: ['password', 'createdAt', 'updatedAt', 'passChanged', 'passChangedFlag'],
+            },
             where: {
                 userName: mockReq.params.id.trim(),
             },
@@ -104,7 +106,9 @@ describe('View A User', () => {
         jest.spyOn(User, 'findOne').mockReturnValue(null);
         const Data = await services.getUser(mockReq, mockRes, mockNext);
         expect(User.findOne).toHaveBeenCalledWith({
-            attributes: { exclude: ['password', 'createdAt', 'updatedAt', 'passChanged'] },
+            attributes: {
+                exclude: ['password', 'createdAt', 'updatedAt', 'passChanged', 'passChangedFlag'],
+            },
             where: {
                 userName: mockReq.params.id.trim(),
             },

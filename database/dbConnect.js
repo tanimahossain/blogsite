@@ -1,6 +1,7 @@
 /// Dependencies ///
 const { Sequelize } = require('sequelize');
 const dbConfig = require('./dbConfig');
+require('./dbTableRelate');
 /// Dependencies ///
 
 const db = {};
@@ -16,16 +17,6 @@ db.connect = async () => {
     }
 };
 
-db.Users = require('../models/usersModel');
-db.Stories = require('../models/storiesModel');
-
-db.Users.hasMany(db.Stories, {
-    foreignKey: 'authorUsername',
-    onDelete: 'CASCADE',
-});
-db.Stories.belongsTo(db.Users, {
-    foreignKey: 'authorUsername',
-});
 db.dataSync = async () => {
     try {
         await db.sequelize.sync({ force: false });

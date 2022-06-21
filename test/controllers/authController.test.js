@@ -277,3 +277,23 @@ describe('Log In User', () => {
         expect(mockReq.status).toBe(401);
     });
 });
+
+describe('Verify', () => {
+    test('verify', async () => {
+        jest.restoreAllMocks();
+        const mockReq = mockRequest({
+            headers: {
+                authorization: 'Bearer MyToken',
+            },
+            payload: {
+                userName: 'tanimahossain',
+            },
+        });
+        const mockRes = mockResponse();
+        const mockNext = jest.fn();
+        await controller.verify(mockReq, mockRes, mockNext);
+        await Promise.resolve();
+        expect(controller.verify).toBeTruthy();
+        expect(mockReq.status).toBe(200);
+    });
+});
